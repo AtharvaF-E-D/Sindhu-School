@@ -5,7 +5,6 @@ import ApproachHeroSection from "../components/academics/ApproachHeroSection";
 import UniqueMethodologySection from "../components/academics/UniqueMethodologySection";
 import ApproachCarouselSection from "../components/academics/ApproachCarouselSection";
 import EducationStagesSection from "../components/academics/EducationStagesSection";
-import ReadyCTA from "../components/home-components/ReadyCTA";
 import Footer from "../components/Footer";
 
 const AcademicsApproachPage: React.FC = () => {
@@ -18,7 +17,6 @@ const AcademicsApproachPage: React.FC = () => {
         <UniqueMethodologySection />
         <ApproachCarouselSection />
         <EducationStagesSection />
-        <ReadyCTA />
       </main>
       <Footer />
     </div>

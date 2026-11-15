@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer
-      className="relative w-full bg-cover bg-center bg-no-repeat pt-10 lg:pt-[40px] pb-6 lg:pb-[24px] select-none overflow-hidden"
+      className="hidden md:block relative w-full bg-cover bg-center bg-no-repeat pt-10 lg:pt-[40px] pb-6 lg:pb-[24px] select-none overflow-hidden"
       style={{ backgroundImage: `url(${footerBg})` }}
       aria-label="Site Footer"
     >

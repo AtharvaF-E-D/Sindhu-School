@@ -3,7 +3,6 @@ import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import NotableAlumniHero from '../components/alumni/NotableAlumniHero';
 import NotableAlumniStoriesSection from '../components/alumni/NotableAlumniStoriesSection';
-import ReadyCTA from '../components/home-components/ReadyCTA';
 import Footer from '../components/Footer';
 
 const NotableAlumniPage: React.FC = () => {
@@ -14,7 +13,6 @@ const NotableAlumniPage: React.FC = () => {
       <main className="flex-1">
         <NotableAlumniHero />
         <NotableAlumniStoriesSection />
-        <ReadyCTA />
       </main>
       <Footer />
     </div>

@@ -22,23 +22,23 @@ const ReadyCTA: React.FC<ReadyCTAProps> = ({ transparentBg = false }) => {
             className="w-full h-[240px] sm:h-[360px] lg:h-[580px] object-cover object-center"
           />
 
-          {/* Overlapping Navy Callout Box (1:1124: h:170, rounded:24px, p:40px, #111e3b) */}
-          <div className="lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:h-[170px] bg-[#111e3b] lg:rounded-[24px] px-6 sm:px-8 lg:px-[40px] py-7 lg:py-[40px] flex flex-col lg:flex-row items-center justify-between gap-6">
-            {/* CTA Headline (1:1127: 36px/40px ExtraBold -0.9px) */}
-            <h2 className="text-[24px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.15] lg:leading-[40px] tracking-[-0.9px] text-white text-center lg:text-left">
+          {/* Overlapping Navy Callout Box (1:1124) */}
+          <div className="lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:h-[170px] bg-[#111e3b] lg:rounded-[24px] px-5 sm:px-8 lg:px-[40px] py-6 sm:py-7 lg:py-[40px] flex flex-col lg:flex-row items-center justify-between gap-5 sm:gap-6">
+            {/* CTA Headline (1:1127) */}
+            <h2 className="text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.2] lg:leading-[40px] tracking-[-0.9px] text-white text-center lg:text-left">
               Ready to give your child
               <br />
               perfect beginning?
             </h2>
 
-            {/* Green Contact Pill (1:1129: 551 x 82, rounded-full, #46e6a7) */}
-            <div className="w-full lg:w-[551px] lg:h-[82px] rounded-[24px] lg:rounded-full bg-[#46e6a7] px-5 py-4 lg:py-0 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-[27px] shadow-md shrink-0">
+            {/* Green Contact Pill (1:1129) */}
+            <div className="w-full lg:w-[551px] lg:h-[82px] rounded-[18px] sm:rounded-full bg-[#46e6a7] px-4 py-3.5 sm:px-5 sm:py-4 lg:py-0 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-[27px] shadow-md shrink-0">
               <a
                 href="tel:+919765587755"
-                className="inline-flex items-center gap-[6px] text-[15px] sm:text-[16px] font-bold leading-[16px] tracking-[-0.3px] text-[#1e293b] hover:opacity-75 transition-opacity whitespace-nowrap"
+                className="inline-flex items-center gap-[6px] text-[14px] sm:text-[16px] font-bold leading-[16px] tracking-[-0.3px] text-[#1e293b] hover:opacity-75 transition-opacity whitespace-nowrap"
               >
                 <svg
-                  className="w-[22px] h-[22px] stroke-[#171717] shrink-0"
+                  className="w-[20px] h-[20px] sm:w-[22px] sm:h-[22px] stroke-[#171717] shrink-0"
                   fill="none"
                   strokeWidth="1.6"
                   viewBox="0 0 24 24"
@@ -55,10 +55,10 @@ const ReadyCTA: React.FC<ReadyCTAProps> = ({ transparentBg = false }) => {
 
               <a
                 href="mailto:info@sindhueducationsociety.com"
-                className="inline-flex items-center gap-[6px] text-[14px] sm:text-[16px] font-bold leading-[16px] tracking-[-0.3px] text-[#1e293b] hover:opacity-75 transition-opacity break-all sm:break-normal"
+                className="inline-flex items-center gap-[6px] text-[13px] sm:text-[16px] font-bold leading-[16px] tracking-[-0.3px] text-[#1e293b] hover:opacity-75 transition-opacity break-all sm:break-normal"
               >
                 <svg
-                  className="w-[22px] h-[22px] stroke-[#171717] shrink-0"
+                  className="w-[20px] h-[20px] sm:w-[22px] sm:h-[22px] stroke-[#171717] shrink-0"
                   fill="none"
                   strokeWidth="1.6"
                   viewBox="0 0 24 24"

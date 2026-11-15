@@ -3,7 +3,6 @@ import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import ParentPathwayHero from '../components/parent-pathway/ParentPathwayHero';
 import KidsProtectFeaturesSection from '../components/parent-pathway/KidsProtectFeaturesSection';
-import ReadyCTA from '../components/home-components/ReadyCTA';
 import Footer from '../components/Footer';
 
 const ParentPathwayAppPage: React.FC = () => {
@@ -14,7 +13,6 @@ const ParentPathwayAppPage: React.FC = () => {
       <main className="flex-1">
         <ParentPathwayHero />
         <KidsProtectFeaturesSection />
-        <ReadyCTA />
       </main>
       <Footer />
     </div>

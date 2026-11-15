@@ -3,7 +3,6 @@ import TopBar from '../components/TopBar';
 import NavBar from '../components/NavBar';
 import SportsHeroSection from '../components/students-chronicle/SportsHeroSection';
 import SportsAchievementsSection from '../components/students-chronicle/SportsAchievementsSection';
-import ReadyCTA from '../components/home-components/ReadyCTA';
 import Footer from '../components/Footer';
 
 const SportsPage: React.FC = () => {
@@ -14,7 +13,6 @@ const SportsPage: React.FC = () => {
       <main className="flex-1">
         <SportsHeroSection />
         <SportsAchievementsSection />
-        <ReadyCTA />
       </main>
       <Footer />
     </div>

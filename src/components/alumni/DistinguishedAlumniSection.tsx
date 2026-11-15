@@ -60,7 +60,7 @@ const ROW_TWO_AWARDEES: AwardeeCardData[] = [
 
 const AwardeeCard: React.FC<{ item: AwardeeCardData }> = ({ item }) => {
   const inner = (
-    <div className="relative w-[290px] h-[378px] overflow-hidden bg-slate-100 group">
+    <div className="relative w-[280px] sm:w-[290px] h-[378px] rounded-[24px] overflow-hidden bg-slate-100 group shadow-md [transform:translateZ(0)] isolate">
       <img
         src={item.image}
         alt={`${item.name} - ${item.year}`}
@@ -72,11 +72,11 @@ const AwardeeCard: React.FC<{ item: AwardeeCardData }> = ({ item }) => {
       <div
         aria-hidden="true"
         style={{ clipPath: 'polygon(0 21.41px, 100% 0, 100% 100%, 0 100%)' }}
-        className="absolute bottom-0 left-0 right-0 h-[112px] bg-[#073c96]/[0.93]"
+        className="absolute bottom-0 left-0 right-0 h-[112px] bg-[#073c96]/[0.93] rounded-b-[24px]"
       />
 
       {/* Year badge (Figma 37:2496: 101x41 at x=176, y=251 relative to 290x378 card) */}
-      <div className="absolute right-[13px] top-[251px] w-[101px] h-[41px] rounded-[5px] bg-[#40c843] px-[15px] pt-[8px] pb-[7px] flex items-center justify-center">
+      <div className="absolute right-[13px] top-[251px] w-[101px] h-[41px] rounded-[6px] bg-[#40c843] px-[15px] pt-[8px] pb-[7px] flex items-center justify-center shadow-xs">
         <span className="text-[14px] leading-[12px] font-semibold text-white whitespace-nowrap">
           {item.year}
         </span>
@@ -94,7 +94,7 @@ const AwardeeCard: React.FC<{ item: AwardeeCardData }> = ({ item }) => {
 
   if (item.href) {
     return (
-      <a href={item.href} className="block focus:outline-none focus:ring-2 focus:ring-[#40c843]">
+      <a href={item.href} className="block rounded-[24px] focus:outline-none focus:ring-2 focus:ring-[#40c843]">
         {inner}
       </a>
     );
@@ -109,26 +109,36 @@ const DistinguishedAlumniSection: React.FC = () => {
       aria-labelledby="distinguished-alumni-heading"
       className="w-full bg-white"
     >
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-0 pt-14 xl:pt-[87px]">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-0 pt-10 sm:pt-14 xl:pt-[87px]">
         <h2
           id="distinguished-alumni-heading"
-          className="text-center text-[32px] sm:text-[42px] lg:text-[48px] leading-[1.15] lg:leading-[54px] font-extrabold tracking-[-1.35px] text-[#073c96]"
+          className="text-center text-[24px] sm:text-[36px] lg:text-[48px] leading-[1.15] lg:leading-[54px] font-extrabold tracking-tight text-[#073c96]"
         >
           Distinguished Alumni Awardee
         </h2>
 
-        <div className="mt-[16px] mx-auto w-full max-w-[782px] h-[2px] bg-[#40c843]" />
+        <div className="mt-3 mx-auto w-3/4 max-w-[280px] sm:max-w-[480px] xl:max-w-[782px] h-[2.5px] bg-[#40c843] rounded-full" />
 
-        <div className="mt-[42px] flex flex-wrap justify-center gap-[25px]">
-          {ROW_ONE_AWARDEES.map((item) => (
+        {/* Mobile / Tablet vertical 1-column stack */}
+        <div className="mt-8 flex flex-col items-center gap-5 sm:gap-6 xl:hidden">
+          {[...ROW_ONE_AWARDEES, ...ROW_TWO_AWARDEES].map((item) => (
             <AwardeeCard key={item.id} item={item} />
           ))}
         </div>
 
-        <div className="mt-[24px] flex flex-wrap justify-center gap-[25px]">
-          {ROW_TWO_AWARDEES.map((item) => (
-            <AwardeeCard key={item.id} item={item} />
-          ))}
+        {/* Desktop 2-row layout */}
+        <div className="hidden xl:block">
+          <div className="mt-[42px] flex flex-wrap justify-center gap-[25px]">
+            {ROW_ONE_AWARDEES.map((item) => (
+              <AwardeeCard key={item.id} item={item} />
+            ))}
+          </div>
+
+          <div className="mt-[24px] flex flex-wrap justify-center gap-[25px]">
+            {ROW_TWO_AWARDEES.map((item) => (
+              <AwardeeCard key={item.id} item={item} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

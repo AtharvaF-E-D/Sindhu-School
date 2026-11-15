@@ -224,74 +224,76 @@ const OurSchoolsGrid: React.FC = () => {
       className="w-full bg-white pt-6 sm:pt-10 lg:pt-[16px] pb-14 sm:pb-20 lg:pb-[258px] select-none"
     >
       <div className="max-w-[1321px] mx-auto px-4 sm:px-6 xl:px-0">
-        {/* SECTION HEADER (Figma 1:1765: eyebrow at y:699, subtitle y:720..774, grid y:813) */}
-        <div className="text-center max-w-[840px] mx-auto mb-8 sm:mb-10 lg:mb-[39px]">
-          <span className="block text-[11px] font-bold leading-[16.5px] tracking-[1.1px] uppercase text-[#9ca3af] mb-[4px]">
+        {/* SECTION HEADER */}
+        <div className="text-center max-w-[840px] mx-auto mb-6 sm:mb-10 lg:mb-[39px] px-2">
+          <span className="block text-[10px] sm:text-[11px] font-bold leading-normal tracking-[1.2px] uppercase text-[#9ca3af] mb-1 sm:mb-[4px]">
             Our Schools
           </span>
 
-          <p className="text-[#64748b] text-[16px] sm:text-[18px] lg:text-[20px] leading-[27px] tracking-[-0.75px] font-normal max-w-[840px] mx-auto">
+          <p className="text-[#64748b] text-[12px] sm:text-[16px] lg:text-[20px] leading-[18px] sm:leading-[27px] tracking-tight font-normal max-w-[340px] sm:max-w-[840px] mx-auto">
             Explore our network of schools, each dedicated to providing quality
             education, fostering creativity, and shaping a brighter future for
             every student.
           </p>
         </div>
 
-        {/* 4-COLUMN GRID (Figma: w:313, gap-x:23, image h:272 r:26, 50x50 blue arrow btn) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-x-[23px] lg:gap-y-[61px]">
-          {schoolsList.map((school) => (
-            <div
-              key={school.id}
-              onClick={() => setSelectedSchool(school)}
-              className="group flex flex-col cursor-pointer transition-all duration-300"
-            >
-              {/* Card Image (313 x 272, rounded:26px) */}
-              <div className="relative w-full h-[220px] sm:h-[250px] lg:h-[272px] rounded-[26px] overflow-hidden bg-slate-100">
-                <div className="w-full h-full transition-transform duration-500 ease-out group-hover:scale-105">
-                  <img
-                    src={school.image}
-                    alt={school.name}
-                    style={school.cropStyle}
-                    className={
-                      school.cropStyle
-                        ? "relative block"
-                        : "w-full h-full object-cover object-center"
-                    }
-                    loading="lazy"
-                  />
+        {/* 2-COLUMN PEEK GRID ON MOBILE, 2 COLS ON TABLET, 4 COLS ON DESKTOP */}
+        <div className="w-full overflow-x-auto scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 pb-4">
+          <div className="grid grid-cols-[265px_265px] xs:grid-cols-[280px_280px] sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-x-[23px] lg:gap-y-[61px] w-max sm:w-full">
+            {schoolsList.map((school) => (
+              <div
+                key={school.id}
+                onClick={() => setSelectedSchool(school)}
+                className="group flex flex-col cursor-pointer transition-all duration-300 w-[265px] xs:w-[280px] sm:w-auto"
+              >
+                {/* Card Image */}
+                <div className="relative w-full h-[200px] xs:h-[215px] sm:h-[250px] lg:h-[272px] rounded-[22px] sm:rounded-[26px] overflow-hidden bg-slate-100 shadow-sm">
+                  <div className="w-full h-full transition-transform duration-500 ease-out group-hover:scale-105">
+                    <img
+                      src={school.image}
+                      alt={school.name}
+                      style={school.cropStyle}
+                      className={
+                        school.cropStyle
+                          ? "relative block"
+                          : "w-full h-full object-cover object-center"
+                      }
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+
+                {/* Caption Row: Title + Circular Blue Arrow Button */}
+                <div className="mt-3 sm:mt-[17px] flex items-center justify-between gap-3 lg:min-h-[57px]">
+                  <h3 className="text-[13.5px] xs:text-[14px] sm:text-[15px] lg:text-[16px] font-semibold text-[#171717] leading-[18px] sm:leading-[20px] line-clamp-2 group-hover:text-[#073c96] transition-colors duration-200">
+                    {school.name}
+                  </h3>
+
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedSchool(school);
+                    }}
+                    className="w-[38px] h-[38px] xs:w-[40px] xs:h-[40px] sm:w-[44px] sm:h-[44px] lg:w-[50px] lg:h-[50px] rounded-full bg-[#073c96] text-white flex items-center justify-center shrink-0 group-hover:bg-[#06307a] transition-all duration-200 cursor-pointer shadow-sm"
+                    aria-label={`View details for ${school.name}`}
+                  >
+                    <svg
+                      className="w-[18px] h-[18px] xs:w-[20px] xs:h-[20px] sm:w-[22px] sm:h-[22px] lg:w-[24px] lg:h-[24px] stroke-current transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="7" y1="17" x2="17" y2="7" />
+                      <polyline points="7 7 17 7 17 17" />
+                    </svg>
+                  </button>
                 </div>
               </div>
-
-              {/* Caption Row: Title + 50x50 Circular Blue Arrow Button */}
-              <div className="mt-[17px] flex items-start justify-between gap-[10px] lg:min-h-[57px]">
-                <h3 className="text-[16px] font-semibold text-[#171717] leading-[20px] group-hover:text-[#073c96] transition-colors duration-200">
-                  {school.name}
-                </h3>
-
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedSchool(school);
-                  }}
-                  className="w-[44px] h-[44px] lg:w-[50px] lg:h-[50px] rounded-full bg-[#073c96] text-white flex items-center justify-center shrink-0 group-hover:bg-[#06307a] transition-all duration-200 cursor-pointer"
-                  aria-label={`View details for ${school.name}`}
-                >
-                  <svg
-                    className="w-[22px] h-[22px] lg:w-[24px] lg:h-[24px] stroke-current transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="7" y1="17" x2="17" y2="7" />
-                    <polyline points="7 7 17 7 17 17" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 

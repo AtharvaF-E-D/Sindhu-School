@@ -3,7 +3,6 @@ import TopBar from "../components/TopBar";
 import NavBar from "../components/NavBar";
 import CurriculumHero from "../components/curriculum-components/CurriculumHero";
 import OurSchoolsGrid from "../components/curriculum-components/OurSchoolsGrid";
-import ReadyCTA from "../components/home-components/ReadyCTA";
 import Footer from "../components/Footer";
 
 const SchoolsCurriculumPage: React.FC = () => {
@@ -23,9 +22,6 @@ const SchoolsCurriculumPage: React.FC = () => {
 
         {/* Our Schools Network 12-Card Grid (matches user provided design) */}
         <OurSchoolsGrid />
-
-        {/* Call to Action Banner */}
-        <ReadyCTA />
       </main>
 
       {/* Global Footer */}

@@ -70,17 +70,18 @@ const UsersIcon: React.FC = () => (
 );
 
 /**
- * Eight white capsule binder perforations spanning the 8px white gap between cards.
+ * Eight white capsule binder perforations spanning the gap between cards,
+ * creating the notebook/binder spine connector shown in the mobile & desktop designs.
  */
 const BinderSpinePerforations: React.FC = () => (
   <div
-    className="relative hidden md:flex w-[8px] shrink-0 flex-col items-center justify-evenly z-20 pointer-events-none"
+    className="relative flex w-[3px] md:w-[4px] shrink-0 flex-col items-center justify-between py-6 md:py-8 z-20 pointer-events-none select-none"
     aria-hidden="true"
   >
     {Array.from({ length: 8 }).map((_, idx) => (
       <span
         key={idx}
-        className="w-[29px] h-[10px] rounded-full bg-white shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] shrink-0"
+        className="w-[26px] md:w-[28px] h-[9px] md:h-[10px] rounded-full bg-white shadow-[0_1px_2px_rgba(0,0,0,0.12),inset_0_1px_1px_rgba(255,255,255,0.85)] shrink-0"
       />
     ))}
   </div>
@@ -141,7 +142,7 @@ const BOTTOM_ROW_CARDS: ValueCardSpec[] = [
   {
     id: "character-development",
     title: "Academic Excellence Character Development",
-    titleLeading: "leading-[32px]",
+    titleLeading: "leading-[26px] md:leading-[32px]",
     description:
       "It dedicates itself not only to academic growth but also to the holistic development of each student’s character, values, and ethical framework, molding responsible and compassionate individuals.",
     bgColor: "#227ceb",
@@ -151,9 +152,8 @@ const BOTTOM_ROW_CARDS: ValueCardSpec[] = [
     illustration: card4CharacterArt,
     illustrationAlt:
       "Illustration of a student climbing stacked books toward a trophy topped with a graduation cap",
-    illustrationClass: "w-[220px] h-[189px]",
-    showGroundLine: true,
-    cardPaddingClass: "p-[28px]",
+    illustrationClass: "w-[175px] h-[150px] sm:w-[195px] sm:h-[168px] md:w-[220px] md:h-[189px]",
+    cardPaddingClass: "p-[20px] sm:p-[28px]",
   },
   {
     id: "lifelong-learning",
@@ -168,22 +168,23 @@ const BOTTOM_ROW_CARDS: ValueCardSpec[] = [
     illustration: card5LifelongArt,
     illustrationAlt:
       "Illustration of a student learning online with a live instructor on a laptop",
-    illustrationClass: "w-[308px] max-w-full h-auto",
-    cardPaddingClass: "p-[28px] md:pt-[35px] md:pb-[35px]",
+    illustrationClass: "w-[260px] sm:w-[308px] max-w-full h-auto",
+    cardPaddingClass: "p-[20px] sm:p-[28px] md:pt-[35px] md:pb-[35px]",
   },
 ];
 
 const BinderValueCard: React.FC<{
   card: ValueCardSpec;
-  desktopCornerClass: string;
-}> = ({ card, desktopCornerClass }) => (
+  cornerClass: string;
+  mobileSpacingClass?: string;
+}> = ({ card, cornerClass, mobileSpacingClass }) => (
   <article
-    className={`flex-1 min-h-[450px] md:h-[479px] flex flex-col justify-between text-white rounded-2xl shadow-[0_20px_25px_-5px_rgba(229,231,235,0.6),0_8px_10px_-6px_rgba(229,231,235,0.6)] ${desktopCornerClass} ${card.cardPaddingClass ?? "p-[28px]"}`}
+    className={`w-[275px] xs:w-[285px] sm:w-[300px] md:w-auto shrink-0 md:shrink md:flex-1 h-[475px] md:h-[479px] flex flex-col justify-between text-white ${cornerClass} ${mobileSpacingClass ?? ""} ${card.cardPaddingClass ?? "p-[20px] sm:p-[28px]"} snap-start shadow-[0_12px_24px_-6px_rgba(0,0,0,0.08)] overflow-hidden`}
     style={{ backgroundColor: card.bgColor }}
   >
     <div className="flex flex-col items-start gap-[12px]">
       <div
-        className="w-[50px] h-[50px] rounded-full border border-white/20 shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] flex items-center justify-center shrink-0"
+        className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] rounded-full border border-white/20 shadow-xs flex items-center justify-center shrink-0"
         style={{ backgroundColor: card.badgeBgColor }}
       >
         {card.iconType === "teacher" ? (
@@ -194,17 +195,24 @@ const BinderValueCard: React.FC<{
       </div>
 
       <h2
-        className={`text-[24px] font-bold ${card.titleLeading} tracking-[0px] text-white text-left`}
+        className={`text-[21px] sm:text-[24px] font-bold ${card.titleLeading} tracking-[0px] text-white text-left`}
       >
-        {card.title}
+        {card.id === "character-development" ? (
+          <>
+            <span className="block">Academic Excellence</span>
+            <span className="block">Character Development</span>
+          </>
+        ) : (
+          card.title
+        )}
       </h2>
 
-      <p className="text-[14px] font-medium leading-[20px] tracking-[0px] text-white text-left">
+      <p className="text-[12.5px] xs:text-[13px] sm:text-[14px] font-medium leading-[18px] sm:leading-[20px] tracking-[0px] text-white text-left">
         {card.description}
       </p>
     </div>
 
-    <div className="mt-6 md:mt-0 flex flex-col items-center justify-end pointer-events-none">
+    <div className="mt-auto flex flex-col items-center justify-end pointer-events-none pb-2 sm:pb-3">
       <img
         src={card.illustration}
         alt={card.illustrationAlt}
@@ -218,26 +226,44 @@ const BinderValueCard: React.FC<{
   </article>
 );
 
-const BinderCardRow: React.FC<{ cards: ValueCardSpec[] }> = ({ cards }) => (
-  <div className="flex flex-col md:flex-row items-stretch gap-5 md:gap-0">
-    {cards.map((card, index) => {
-      const desktopCornerClass =
-        index === 0
-          ? "md:rounded-none md:rounded-bl-[24px]"
-          : index === cards.length - 1
-            ? "md:rounded-none md:rounded-br-[24px]"
-            : "md:rounded-none";
+const BinderCardRow: React.FC<{
+  cards: ValueCardSpec[];
+  isBottomRow?: boolean;
+}> = ({ cards, isBottomRow }) => (
+  <div className="w-full overflow-x-auto scrollbar-none -mx-4 sm:mx-0 py-2 sm:py-3 snap-x snap-mandatory scroll-pl-4 sm:scroll-pl-6 md:scroll-pl-0">
+    <div className="flex flex-row items-stretch w-max md:w-full">
+      {cards.map((card, index) => {
+        const cornerClass = isBottomRow
+          ? index === 0
+            ? "rounded-bl-[22px] sm:rounded-bl-[24px] rounded-tl-none rounded-r-none"
+            : index === cards.length - 1
+              ? "rounded-br-[22px] sm:rounded-br-[24px] rounded-tr-none rounded-l-none"
+              : "rounded-none"
+          : index === 0
+            ? "rounded-l-[22px] rounded-r-none"
+            : index === cards.length - 1
+              ? "rounded-r-[22px] rounded-l-none"
+              : "rounded-none";
 
-      return (
-        <React.Fragment key={card.id}>
-          {index > 0 && <BinderSpinePerforations />}
-          <BinderValueCard
-            card={card}
-            desktopCornerClass={desktopCornerClass}
-          />
-        </React.Fragment>
-      );
-    })}
+        const mobileSpacingClass =
+          index === 0
+            ? "ml-4 sm:ml-6 md:ml-0"
+            : index === cards.length - 1
+              ? "mr-6 sm:mr-8 md:mr-0"
+              : "";
+
+        return (
+          <React.Fragment key={card.id}>
+            {index > 0 && <BinderSpinePerforations />}
+            <BinderValueCard
+              card={card}
+              cornerClass={cornerClass}
+              mobileSpacingClass={mobileSpacingClass}
+            />
+          </React.Fragment>
+        );
+      })}
+    </div>
   </div>
 );
 
@@ -245,15 +271,15 @@ const CoreValuesTimeline: React.FC = () => {
   return (
     <section
       id="core-values-cards"
-      className="relative z-10 w-full pt-4 sm:pt-6 pb-8 sm:pb-10 select-none"
+      className="relative z-10 w-full pt-2 sm:pt-4 md:pt-6 pb-8 sm:pb-10 select-none"
     >
       <div className="max-w-[1051px] mx-auto px-4 sm:px-6 lg:px-0">
         {/* Top Binder Row: 3 Connected Cards */}
         <BinderCardRow cards={TOP_ROW_CARDS} />
 
-        {/* Bottom Binder Row: 2 Connected Cards */}
-        <div className="mt-6 md:mt-[41px]">
-          <BinderCardRow cards={BOTTOM_ROW_CARDS} />
+        {/* Bottom Binder Row: 2 Connected Cards (straight top border) */}
+        <div className="mt-5 sm:mt-6 md:mt-[41px]">
+          <BinderCardRow cards={BOTTOM_ROW_CARDS} isBottomRow />
         </div>
       </div>
     </section>

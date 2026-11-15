@@ -15,6 +15,7 @@ import SportsPage from './pages/SportsPage';
 import ParentPathwayAppPage from './pages/ParentPathwayAppPage';
 import SesAlumniPage from './pages/SesAlumniPage';
 import NotableAlumniPage from './pages/NotableAlumniPage';
+import MobileBottomNav from './components/MobileBottomNav';
 
 const ROUTE_SEGMENTS = {
   notableAlumni: new Set([
@@ -95,6 +96,9 @@ const ROUTE_SEGMENTS = {
     'schools',
     'schools-directory',
     'our-schools-network',
+    'admissions',
+    'admission',
+    'curicullam',
   ]),
   about: new Set([
     'about',
@@ -302,7 +306,7 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="pb-16 md:pb-0">
       {currentPage === 'notable-alumni' ? (
         <NotableAlumniPage />
       ) : currentPage === 'ses-alumni' ? (
@@ -336,6 +340,7 @@ function App() {
       ) : (
         <HomePage />
       )}
+      <MobileBottomNav currentPage={currentPage} />
     </div>
   );
 }

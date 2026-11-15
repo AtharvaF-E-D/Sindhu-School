@@ -160,19 +160,19 @@ const AlumniStatsSection: React.FC = () => {
       aria-label="Alumni Network Highlights"
       className="w-full bg-white"
     >
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:pl-[81px] xl:pr-[69px] pt-12 xl:pt-[64px]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-[24px]">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:pl-[81px] xl:pr-[69px] pt-8 sm:pt-12 xl:pt-[64px]">
+        <div className="flex flex-col sm:grid sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 xl:gap-[24px] max-w-[420px] sm:max-w-none mx-auto">
           {ALUMNI_STATS.map((stat) => (
             <div
               key={stat.id}
-              className="xl:w-[304.5px] min-h-[320px] xl:h-[340px] rounded-[16px] bg-[#40c843]/20 border border-[#40c843]/[0.18] p-[32px] shadow-[0_1px_2px_-1px_rgba(0,0,0,0.03),0_1px_3px_0_rgba(0,0,0,0.04)] flex flex-col items-center justify-between text-center"
+              className="w-full xl:w-[304.5px] min-h-[220px] sm:min-h-[280px] xl:h-[340px] rounded-[24px] bg-[#e6f9ed] border border-[#bbf7d0] p-6 sm:p-7 xl:p-[32px] shadow-xs flex flex-col items-center justify-center text-center [transform:translateZ(0)]"
             >
-              <div className="h-[96px] mb-[12px] flex items-center justify-center shrink-0">
+              <div className="h-[70px] sm:h-[90px] mb-2 sm:mb-3 flex items-center justify-center shrink-0">
                 {stat.icon}
               </div>
 
               <div className="flex flex-col items-center">
-                <h3 className="text-[20px] leading-[28px] font-bold tracking-[-0.5px] text-[#0f172a]">
+                <h3 className="text-[17px] sm:text-[20px] leading-[24px] sm:leading-[28px] font-bold tracking-tight text-[#0f172a]">
                   {stat.titleLines.map((line, i) => (
                     <React.Fragment key={line}>
                       {i > 0 && <br />}
@@ -180,7 +180,7 @@ const AlumniStatsSection: React.FC = () => {
                     </React.Fragment>
                   ))}
                 </h3>
-                <p className="mt-[11px] text-[15px] leading-[24.38px] font-normal text-[#64748b] whitespace-pre-line">
+                <p className="mt-2 text-[13px] sm:text-[14px] leading-relaxed font-normal text-[#52657e] whitespace-pre-line">
                   {stat.description}
                 </p>
               </div>
