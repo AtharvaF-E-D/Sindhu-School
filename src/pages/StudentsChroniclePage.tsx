@@ -3,7 +3,6 @@ import TopBar from "../components/TopBar";
 import NavBar from "../components/NavBar";
 import ChronicleHero from "../components/students-chronicle/ChronicleHero";
 import SesChroniclesBanner from "../components/students-chronicle/SesChroniclesBanner";
-import ReadyCTA from "../components/home-components/ReadyCTA";
 import Footer from "../components/Footer";
 
 const StudentsChroniclePage: React.FC = () => {
@@ -23,9 +22,6 @@ const StudentsChroniclePage: React.FC = () => {
 
         {/* Blue SES Chronicles Quote Banner */}
         <SesChroniclesBanner />
-
-        {/* Call to Action Banner */}
-        <ReadyCTA />
       </main>
 
       {/* Global Footer */}

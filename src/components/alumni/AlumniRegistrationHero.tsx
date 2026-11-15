@@ -58,10 +58,10 @@ const DownChevronIcon: React.FC = () => (
 );
 
 const INPUT_CLASS =
-  'w-full h-[40px] rounded-[12px] bg-white border border-[#b2dbff] px-[24px] text-[12px] leading-[35px] text-[#262e35] placeholder:text-[#c0c0c0] focus:outline-none focus:border-[#073c96] transition-colors';
+  'w-full h-[42px] rounded-[10px] bg-white border border-[#b2dbff] px-4 text-[13px] text-[#262e35] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#073c96] transition-colors shadow-xs';
 
 const LABEL_CLASS =
-  'block text-[14px] leading-[18px] font-normal text-[#262e35] mb-[5px]';
+  'block text-[13px] leading-[18px] font-medium text-[#262e35] mb-[5px]';
 
 const AlumniRegistrationHero: React.FC = () => {
   const [form, setForm] = useState<AlumniFormState>(INITIAL_FORM);
@@ -94,17 +94,26 @@ const AlumniRegistrationHero: React.FC = () => {
       aria-labelledby="alumni-register-heading"
       className="w-full bg-white"
     >
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:pl-[81px] xl:pr-[69px] pt-8 xl:pt-[87px]">
-        <div className="flex flex-col xl:flex-row items-stretch xl:items-start gap-6 xl:gap-[8px]">
-          {/* Left Blue-Tinted Alumni Registration Card (Figma 37:2436: 717x850) */}
-          <div className="w-full xl:w-[717px] xl:h-[850px] bg-[#c4deff]/30 pl-5 pr-5 sm:pl-[30px] sm:pr-[42px] pt-[20px] pb-[49px] shrink-0">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:pl-[81px] xl:pr-[69px] pt-4 sm:pt-8 xl:pt-[87px]">
+        <div className="flex flex-col xl:flex-row items-stretch xl:items-start gap-4 sm:gap-6 xl:gap-[8px]">
+          {/* Top on Mobile / Right on Desktop Campus Clocktower Photo */}
+          <div className="order-1 xl:order-2 relative w-full h-[220px] sm:h-[320px] xl:w-[565px] xl:h-[850px] rounded-[24px] xl:rounded-none overflow-hidden shrink-0 bg-slate-100 shadow-sm [transform:translateZ(0)] isolate">
+            <img
+              src={clocktowerCampusImg}
+              alt="Sindhu Education Society clocktower campus building"
+              className="w-full h-full object-cover object-center rounded-[24px] xl:rounded-none xl:object-fill xl:max-w-none xl:absolute xl:left-[-144.6354%] xl:top-0 xl:w-[369.5677%] xl:h-[111.5373%]"
+            />
+          </div>
+
+          {/* Bottom on Mobile / Left on Desktop Blue-Tinted Alumni Registration Card */}
+          <div className="order-2 xl:order-1 w-full xl:w-[717px] xl:h-[850px] bg-[#eef6ff] rounded-[24px] xl:rounded-none px-4 py-6 sm:px-8 xl:pl-[30px] xl:pr-[42px] xl:pt-[20px] xl:pb-[49px] shrink-0 border border-[#d6e8fc] xl:border-none shadow-sm xl:shadow-none [transform:translateZ(0)]">
             <div className="w-full xl:w-[645px]">
-              <p className="text-[16px] leading-[26px] font-semibold text-[#64748b] uppercase">
+              <p className="text-[12px] sm:text-[14px] leading-5 font-semibold text-[#64748b] uppercase tracking-wider">
                 REGISTER FOR ALUMNI
               </p>
               <h1
                 id="alumni-register-heading"
-                className="mt-[5px] text-[24px] sm:text-[28px] leading-[35px] font-semibold text-[#073c96]"
+                className="mt-1 text-[22px] sm:text-[28px] leading-[30px] sm:leading-[35px] font-bold text-[#073c96]"
               >
                 Become an Alumni Member
               </h1>
@@ -197,8 +206,8 @@ const AlumniRegistrationHero: React.FC = () => {
                   />
                 </div>
 
-                {/* 6. Education Year + Degree/Class (37:2475: 348px + 8px gap + 289px) */}
-                <div className="mt-[16.5px] grid grid-cols-1 sm:grid-cols-[348fr_289fr] gap-[8px]">
+                {/* 6. Education Year + Degree/Class */}
+                <div className="mt-[16.5px] grid grid-cols-2 gap-2.5 sm:gap-[8px]">
                   <div>
                     <label htmlFor="alumni-year" className={LABEL_CLASS}>
                       Education Year
@@ -222,7 +231,7 @@ const AlumniRegistrationHero: React.FC = () => {
                       placeholder="Degree/Class"
                       value={form.degreeClass}
                       onChange={handleChange('degreeClass')}
-                      className={`${INPUT_CLASS} sm:pl-[35px]`}
+                      className={INPUT_CLASS}
                     />
                   </div>
                 </div>
@@ -272,7 +281,7 @@ const AlumniRegistrationHero: React.FC = () => {
                 {/* 9. Submit CTA (37:2437: 645x54, #40c843) */}
                 <button
                   type="submit"
-                  className="mt-[27px] w-full h-[54px] rounded-[8px] bg-[#40c843] hover:bg-[#38b53b] transition-colors shadow-[0_2px_4px_-2px_rgba(64,200,67,0.20),0_4px_6px_-1px_rgba(64,200,67,0.30)] flex items-center justify-center gap-[15px] text-[16px] leading-[20px] font-medium text-white cursor-pointer"
+                  className="mt-[22px] w-full h-[48px] sm:h-[54px] rounded-[10px] bg-[#22c55e] hover:bg-[#16a34a] transition-all shadow-[0_2px_8px_rgba(34,197,94,0.35)] flex items-center justify-center gap-[10px] text-[15px] sm:text-[16px] leading-[20px] font-semibold text-white cursor-pointer"
                 >
                   <span>Apply</span>
                   <svg
@@ -319,15 +328,6 @@ const AlumniRegistrationHero: React.FC = () => {
                 )}
               </form>
             </div>
-          </div>
-
-          {/* Right Campus Clocktower Photo (Figma 37:2449: 565x850) */}
-          <div className="relative w-full h-[420px] sm:h-[600px] xl:w-[565px] xl:h-[850px] overflow-hidden shrink-0 bg-slate-100">
-            <img
-              src={clocktowerCampusImg}
-              alt="Sindhu Education Society clocktower campus building"
-              className="w-full h-full object-cover object-center xl:object-fill xl:max-w-none xl:absolute xl:left-[-144.6354%] xl:top-0 xl:w-[369.5677%] xl:h-[111.5373%]"
-            />
           </div>
         </div>
       </div>

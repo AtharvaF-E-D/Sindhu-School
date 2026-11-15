@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import quoteIcon from "../../assets/home-quote-icon.png";
+import React, { useRef, useState } from "react";
 import avatarKaran from "../../assets/avatar-karan.png";
 import avatarCatherine from "../../assets/avatar-catherine.png";
 import avatarPeter from "../../assets/avatar-peter.png";
@@ -18,7 +17,7 @@ const feedbacks: FeedbackItem[] = [
     id: 1,
     name: "Karan",
     time: "1 week ago",
-    text: "Our experience with the school has been wonderful, and the teachers welcomed us politely. Academic guidance is very strong with personal attention. My child enjoys every classroom activity and never felt left behind.",
+    text: "My buying experience is so nice, and received me very politely. Riding experience is also very good. Very good performance. I never experienced such a kind of performance. Very good service.",
     avatar: avatarKaran,
     stars: 5,
   },
@@ -26,7 +25,7 @@ const feedbacks: FeedbackItem[] = [
     id: 2,
     name: "Catherine",
     time: "10 days ago",
-    text: "I love the supportive faculty and parent communication is excellent. They respond in a timely manner with complete updates on student progress, co-curricular clubs, and holistic learning programs.",
+    text: "I love my e-bike and the customer service is excellent. They respond in a timely manner with loads of information about e-bikes, accessories and maintenance information.",
     avatar: avatarCatherine,
     stars: 5,
   },
@@ -58,61 +57,66 @@ const feedbacks: FeedbackItem[] = [
 
 const ExploreFeedback: React.FC = () => {
   const [startIndex, setStartIndex] = useState(0);
-
-  const visibleCount = 3;
-  const maxStart = feedbacks.length - visibleCount;
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const handlePrev = () => {
-    setStartIndex((prev) => (prev <= 0 ? maxStart : prev - 1));
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -280, behavior: "smooth" });
+    }
+    setStartIndex((prev) => (prev <= 0 ? feedbacks.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setStartIndex((prev) => (prev >= maxStart ? 0 : prev + 1));
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 280, behavior: "smooth" });
+    }
+    setStartIndex((prev) => (prev >= feedbacks.length - 1 ? 0 : prev + 1));
   };
 
-  const visibleCards = feedbacks.slice(startIndex, startIndex + visibleCount);
-  const progressOffset = (startIndex / Math.max(maxStart, 1)) * 48;
+  const progressOffset = (startIndex / Math.max(feedbacks.length - 1, 1)) * 48;
 
   return (
     <section
       id="feedback"
-      className="w-full bg-[#f5f8ff] py-14 lg:py-0 lg:h-[584px] flex items-center select-none overflow-hidden"
+      className="w-full bg-[#f6f9fe] py-10 sm:py-14 lg:py-0 lg:h-[584px] flex items-center select-none overflow-hidden"
       aria-label="Explore Genuine Feedback"
     >
       <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:pl-[68px] lg:pr-[24px]">
-        <div className="flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-0">
-          {/* Left Intro Column (Figma 1:1026: w:295.25, mr:40px) */}
-          <div className="w-full lg:w-[295.25px] lg:mr-[40px] lg:pt-[8px] lg:pb-[16px] shrink-0">
-            <img
-              src={quoteIcon}
-              alt=""
+        <div className="flex flex-col lg:flex-row lg:items-center gap-6 sm:gap-8 lg:gap-0">
+          {/* Left Intro Column */}
+          <div className="w-full lg:w-[295px] lg:mr-[40px] lg:pt-[8px] lg:pb-[16px] shrink-0">
+            {/* Grey Double Quote Icon */}
+            <svg
+              className="w-[44px] h-[34px] sm:w-[52px] sm:h-[40px] text-[#b0b7c3] mb-4 sm:mb-5 fill-current"
+              viewBox="0 0 48 38"
               aria-hidden="true"
-              className="w-[56px] h-[56px] object-contain mb-[20px]"
-            />
+            >
+              <path d="M0 22.8C0 10.2 8.4 0 21.6 0v7.2C14.4 7.2 9.6 12 9.6 19.2h12V38H0V22.8zm26.4 0C26.4 10.2 34.8 0 48 0v7.2c-7.2 0-12 4.8-12 12h12V38H26.4V22.8z" />
+            </svg>
 
-            <h2 className="text-[28px] lg:text-[30px] font-bold leading-[36px] tracking-[-0.75px] text-[#16181b]">
+            <h2 className="text-[26px] sm:text-[28px] lg:text-[30px] font-bold leading-[32px] sm:leading-[36px] tracking-[-0.75px] text-[#16181b]">
               Explore Genuine
               <br />
               Feedback
             </h2>
 
-            {/* Slider Controls (Figma 1:1034: mt:95.5px, gap:16px) */}
-            <div className="mt-8 lg:mt-[95.5px] flex items-center gap-[16px]">
+            {/* Slider Controls */}
+            <div className="mt-5 sm:mt-8 lg:mt-[95.5px] flex items-center gap-[16px]">
               <button
                 type="button"
                 onClick={handlePrev}
-                className="w-[20px] h-[20px] flex items-center justify-center text-[#16181b] hover:opacity-60 transition-opacity cursor-pointer"
+                className="w-[24px] h-[24px] flex items-center justify-center text-[#16181b] hover:opacity-60 transition-opacity cursor-pointer"
                 aria-label="Previous review"
               >
-                <svg className="w-[20px] h-[20px] stroke-current" fill="none" strokeWidth="2" viewBox="0 0 24 24">
+                <svg className="w-[18px] h-[18px] stroke-current" fill="none" strokeWidth="2.2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5m0 0l6 6m-6-6l6-6" />
                 </svg>
               </button>
 
-              {/* Progress Track 80px x 3px with 32px active bar */}
-              <div className="relative w-[80px] h-[3px] bg-[#e3e6e8] rounded-full overflow-hidden">
+              {/* Progress Track */}
+              <div className="relative w-[70px] sm:w-[80px] h-[3px] bg-[#e2e8f0] rounded-full overflow-hidden">
                 <div
-                  className="absolute top-0 h-[3px] w-[32px] bg-[#16181b] rounded-full transition-all duration-300"
+                  className="absolute top-0 h-[3px] w-[26px] sm:w-[32px] bg-[#16181b] rounded-full transition-all duration-300"
                   style={{ left: `${progressOffset}px` }}
                 />
               </div>
@@ -120,27 +124,30 @@ const ExploreFeedback: React.FC = () => {
               <button
                 type="button"
                 onClick={handleNext}
-                className="w-[20px] h-[20px] flex items-center justify-center text-[#16181b] hover:opacity-60 transition-opacity cursor-pointer"
+                className="w-[24px] h-[24px] flex items-center justify-center text-[#16181b] hover:opacity-60 transition-opacity cursor-pointer"
                 aria-label="Next review"
               >
-                <svg className="w-[20px] h-[20px] stroke-current" fill="none" strokeWidth="2" viewBox="0 0 24 24">
+                <svg className="w-[18px] h-[18px] stroke-current" fill="none" strokeWidth="2.2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6" />
                 </svg>
               </button>
             </div>
           </div>
 
-          {/* Right CardsGrid (Figma 1:1043: 3 cards x 303.25px, gap:28px) */}
-          <div className="w-full lg:w-[965.75px] grid grid-cols-1 md:grid-cols-3 gap-[28px] shrink-0">
-            {visibleCards.map((item) => (
-              <article key={item.id} className="flex flex-col">
-                {/* Speech Bubble Body (Figma 1:1045: 303.25 x 259.56, p:28, rounded:16) */}
-                <div className="relative bg-white border border-[#f5f5f5] rounded-[16px] p-[28px] lg:h-[259.56px] shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex flex-col justify-between">
-                  <p className="text-[13.5px] font-normal leading-[21.94px] text-[#4a4e53]">
+          {/* Right Cards: Horizontal scroll on mobile/tablet matching screenshot, 3-col on lg */}
+          <div
+            ref={scrollRef}
+            className="w-full lg:w-[965.75px] flex flex-nowrap overflow-x-auto scrollbar-none gap-4 sm:gap-6 lg:grid lg:grid-cols-3 lg:gap-[28px] shrink-0 pt-1 pb-4 snap-x"
+          >
+            {feedbacks.map((item) => (
+              <article key={item.id} className="w-[260px] sm:w-[285px] lg:w-auto shrink-0 flex flex-col snap-start">
+                {/* Speech Bubble Body */}
+                <div className="relative bg-white border border-[#edf0f5] rounded-[22px] sm:rounded-[24px] p-5 sm:p-6 lg:p-[28px] min-h-[220px] sm:min-h-[240px] lg:h-[260px] shadow-[0_10px_30px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+                  <p className="text-[13px] sm:text-[13.5px] font-normal leading-[21px] sm:leading-[22px] text-[#4a4e53]">
                     {item.text}
                   </p>
 
-                  {/* 5 Emerald Stars (#00b67a, gap:4px, 16x16) */}
+                  {/* 5 Emerald Stars */}
                   <div className="flex items-center gap-[4px] mt-4" aria-label={`${item.stars} out of 5 stars`}>
                     {Array.from({ length: item.stars }).map((_, idx) => (
                       <svg
@@ -154,25 +161,25 @@ const ExploreFeedback: React.FC = () => {
                     ))}
                   </div>
 
-                  {/* Speech Bubble Tail (Figma 1:1060: left:38px, bottom:-11px, 24x12 triangle) */}
+                  {/* Speech Bubble Tail pointing down towards avatar */}
                   <div
-                    className="absolute left-[38px] -bottom-[11px] w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[12px] border-t-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.04)]"
+                    className="absolute left-[34px] -bottom-[10px] w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.04)]"
                     aria-hidden="true"
                   />
                 </div>
 
-                {/* Author Row (Figma 1:1061: pt:24px, pl:12px, gap:14px, 40x40 avatar) */}
-                <div className="pt-[24px] pl-[12px] flex items-center gap-[14px]">
+                {/* Author Row */}
+                <div className="pt-[18px] sm:pt-[22px] pl-[12px] flex items-center gap-[12px] sm:gap-[14px]">
                   <img
                     src={item.avatar}
                     alt={item.name}
-                    className="w-[40px] h-[40px] rounded-full object-cover shrink-0 shadow-xs"
+                    className="w-[42px] h-[42px] rounded-full object-cover shrink-0 shadow-xs"
                   />
                   <div>
-                    <h4 className="text-[14px] font-bold leading-[14px] text-[#16181b]">
+                    <h4 className="text-[14px] font-bold leading-[16px] text-[#16181b]">
                       {item.name}
                     </h4>
-                    <p className="mt-[4px] text-[12px] font-normal leading-[12px] text-[#8a9097]">
+                    <p className="mt-[2px] text-[12px] font-normal leading-[14px] text-[#8a9097]">
                       {item.time}
                     </p>
                   </div>
@@ -181,7 +188,7 @@ const ExploreFeedback: React.FC = () => {
             ))}
           </div>
 
-          {/* Right Carousel Chevron Button (Figma 1:1119: x:1377, 31x31) */}
+          {/* Right Carousel Chevron Button (Desktop Only) */}
           <button
             type="button"
             onClick={handleNext}

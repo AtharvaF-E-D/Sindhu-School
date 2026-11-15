@@ -3,7 +3,6 @@ import TopBar from "../components/TopBar";
 import NavBar from "../components/NavBar";
 import LegacyHero from "../components/legacy-leadership/LegacyHero";
 import WhyChooseCards from "../components/why-choose-ses/WhyChooseCards";
-import ReadyCTA from "../components/home-components/ReadyCTA";
 import Footer from "../components/Footer";
 
 const WhyChooseSesPage: React.FC = () => {
@@ -14,7 +13,6 @@ const WhyChooseSesPage: React.FC = () => {
       <main className="flex-1">
         <LegacyHero />
         <WhyChooseCards />
-        <ReadyCTA />
       </main>
       <Footer />
     </div>

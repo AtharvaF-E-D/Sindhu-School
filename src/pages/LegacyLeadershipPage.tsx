@@ -3,7 +3,6 @@ import TopBar from "../components/TopBar";
 import NavBar from "../components/NavBar";
 import FounderTributeHero from "../components/legacy-leadership/FounderTributeHero";
 import LeadershipMessages from "../components/legacy-leadership/LeadershipMessages";
-import ReadyCTA from "../components/home-components/ReadyCTA";
 import Footer from "../components/Footer";
 
 const LegacyLeadershipPage: React.FC = () => {
@@ -14,7 +13,6 @@ const LegacyLeadershipPage: React.FC = () => {
       <main className="flex-1">
         <FounderTributeHero />
         <LeadershipMessages />
-        <ReadyCTA />
       </main>
       <Footer />
     </div>

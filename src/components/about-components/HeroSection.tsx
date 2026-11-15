@@ -43,7 +43,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   }, [isPlaying]);
 
   return (
-    <section className="relative w-full h-[360px] sm:h-[460px] lg:h-[566px] bg-slate-950 flex items-center justify-center overflow-hidden select-none">
+    <section className="relative w-full h-[200px] xs:h-[220px] sm:h-[340px] lg:h-[566px] bg-slate-950 flex items-center justify-center overflow-hidden select-none">
       {/* Full-bleed Physics Lab Poster & Video (Figma 1:1414: 1440 x 566) */}
       <div className="absolute inset-0 w-full h-full">
         <video
@@ -59,9 +59,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         />
       </div>
 
-      {/* Center Translucent Play Button (Figma 1:1415: 92 x 92, bg-white/57, duotone #073c96 play) */}
+      {/* Bottom-left Badge: OUR PHYSICS LAB (visible on mobile & desktop) */}
+      <div className="absolute left-2.5 sm:left-6 bottom-2 sm:bottom-4 z-20 flex flex-col items-start select-none pointer-events-none">
+        <div className="bg-white px-2 sm:px-3 py-0.5 sm:py-1 shadow-sm">
+          <span className="text-[10px] sm:text-[13px] font-black tracking-wider text-slate-900 uppercase">
+            OUR PHYSICS LAB
+          </span>
+        </div>
+        <div className="bg-[#073c96] px-1.5 sm:px-2.5 py-0.5 mt-0.5 max-w-[240px] sm:max-w-none">
+          <span className="text-[7px] sm:text-[9px] font-bold text-white tracking-wide uppercase line-clamp-1 sm:line-clamp-none">
+            MINDS BEHIND CURIOSITY TRIES TO UNCOVER THE LAWS OF TRUTH
+          </span>
+        </div>
+      </div>
+
+      {/* Center Translucent Play Button (Figma 1:1415: 92 x 92) - hidden on mobile to keep poster clean */}
       {!isPlaying && (
-        <div className="relative z-20 flex items-center justify-center lg:translate-x-[10px]">
+        <div className="hidden lg:flex relative z-20 items-center justify-center translate-x-[10px]">
           <button
             type="button"
             onClick={handlePlayToggle}

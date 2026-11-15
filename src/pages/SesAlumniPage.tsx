@@ -5,7 +5,6 @@ import AlumniRegistrationHero from '../components/alumni/AlumniRegistrationHero'
 import AlumniStatsSection from '../components/alumni/AlumniStatsSection';
 import DistinguishedAlumniSection from '../components/alumni/DistinguishedAlumniSection';
 import SearchNetworkGrid from '../components/alumni/SearchNetworkGrid';
-import ReadyCTA from '../components/home-components/ReadyCTA';
 import Footer from '../components/Footer';
 
 const SesAlumniPage: React.FC = () => {
@@ -18,7 +17,6 @@ const SesAlumniPage: React.FC = () => {
         <AlumniStatsSection />
         <DistinguishedAlumniSection />
         <SearchNetworkGrid />
-        <ReadyCTA />
       </main>
       <Footer />
     </div>

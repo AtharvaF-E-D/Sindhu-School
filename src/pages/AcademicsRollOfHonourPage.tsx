@@ -3,7 +3,6 @@ import TopBar from "../components/TopBar";
 import NavBar from "../components/NavBar";
 import RollOfHonourHeroSection from "../components/academics/RollOfHonourHeroSection";
 import HonourRankCardsSection from "../components/academics/HonourRankCardsSection";
-import ReadyCTA from "../components/home-components/ReadyCTA";
 import Footer from "../components/Footer";
 
 const AcademicsRollOfHonourPage: React.FC = () => {
@@ -14,7 +13,6 @@ const AcademicsRollOfHonourPage: React.FC = () => {
       <main className="flex-1 bg-white">
         <RollOfHonourHeroSection />
         <HonourRankCardsSection />
-        <ReadyCTA />
       </main>
       <Footer />
     </div>

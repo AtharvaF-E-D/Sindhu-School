@@ -8,7 +8,6 @@ import OurVision from "../components/about-components/OurVision";
 import OurMission from "../components/about-components/OurMission";
 import OurJourney from "../components/about-components/OurJourney";
 import Footer from "../components/Footer";
-import ReadyCTA from "../components/home-components/ReadyCTA";
 
 const AboutPage: React.FC = () => {
   return (
@@ -22,9 +21,6 @@ const AboutPage: React.FC = () => {
         <OurVision />
         <OurMission />
         <OurJourney />
-        <div className="lg:pt-[57px]">
-          <ReadyCTA />
-        </div>
       </main>
       <Footer />
     </div>

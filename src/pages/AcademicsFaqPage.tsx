@@ -4,7 +4,6 @@ import NavBar from "../components/NavBar";
 import FaqHeroSection from "../components/academics/FaqHeroSection";
 import AdmissionDocumentsSection from "../components/academics/AdmissionDocumentsSection";
 import FaqAccordionSection from "../components/academics/FaqAccordionSection";
-import ReadyCTA from "../components/home-components/ReadyCTA";
 import Footer from "../components/Footer";
 
 const AcademicsFaqPage: React.FC = () => {
@@ -16,7 +15,6 @@ const AcademicsFaqPage: React.FC = () => {
         <FaqHeroSection />
         <AdmissionDocumentsSection />
         <FaqAccordionSection />
-        <ReadyCTA />
       </main>
       <Footer />
     </div>

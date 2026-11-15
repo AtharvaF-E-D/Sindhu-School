@@ -3,7 +3,6 @@ import TopBar from "../components/TopBar";
 import NavBar from "../components/NavBar";
 import CoreValuesHero from "../components/core-values/CoreValuesHero";
 import CoreValuesTimeline from "../components/core-values/CoreValuesTimeline";
-import ReadyCTA from "../components/home-components/ReadyCTA";
 import Footer from "../components/Footer";
 
 const CoreValuesPage: React.FC = () => {
@@ -17,10 +16,10 @@ const CoreValuesPage: React.FC = () => {
       <TopBar />
       <NavBar />
 
-      <main className="flex-1 relative overflow-x-clip bg-white">
+      <main className="flex-1 relative overflow-x-clip bg-gradient-to-b from-[#edf5fe] via-[#f7faff] to-white md:bg-white">
         {/* Subtle Figma Background Polygons (Rectangle 149 & Rectangle 150) */}
         <svg
-          className="pointer-events-none select-none absolute top-[15px] left-0 w-full h-[793px] z-0"
+          className="pointer-events-none select-none absolute top-0 left-0 w-full h-[793px] z-0"
           viewBox="0 0 1440 793"
           preserveAspectRatio="none"
           fill="none"
@@ -51,9 +50,6 @@ const CoreValuesPage: React.FC = () => {
 
         {/* 5 Core Values Notebook Binder Cards Showcase */}
         <CoreValuesTimeline />
-
-        {/* Ready to give your child perfect beginning? (CTA Banner) */}
-        <ReadyCTA transparentBg />
       </main>
 
       {/* Global Footer */}

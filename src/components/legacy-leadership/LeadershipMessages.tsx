@@ -96,32 +96,34 @@ const LeadershipMessages: React.FC = () => {
   return (
     <section
       aria-labelledby="legacy-leadership-heading"
-      className="w-full bg-white pb-2 sm:pb-3 lg:pb-[8px]"
+      className="w-full bg-white pb-8 sm:pb-12 lg:pb-[24px]"
     >
       <div className="max-w-[1226px] mx-auto px-4 sm:px-8 min-[1340px]:px-0">
-        {/* Divider Section Title */}
-        <div className="flex items-center gap-5 sm:gap-9 pt-7 sm:pt-9 lg:pt-[48px] pb-10 sm:pb-14 lg:pb-[70px]">
-          <span aria-hidden="true" className="h-[1px] flex-1 bg-[#cbd5e1]" />
+        {/* Centered Section Title with Teal Underline */}
+        <div className="flex flex-col items-center justify-center pt-8 sm:pt-10 lg:pt-[48px] pb-8 sm:pb-12 lg:pb-[56px] text-center">
           <h1
             id="legacy-leadership-heading"
-            className="scroll-mt-24 text-[24px] sm:text-[32px] font-bold leading-[1.2] tracking-[0.01em] text-[#111827] text-center whitespace-nowrap"
+            className="scroll-mt-24 text-[24px] xs:text-[26px] sm:text-[32px] lg:text-[36px] font-bold leading-[1.2] tracking-[-0.01em] text-[#111827] lowercase"
           >
             legacy &amp; leadership
           </h1>
-          <span aria-hidden="true" className="h-[1px] flex-1 bg-[#cbd5e1]" />
+          <div
+            aria-hidden="true"
+            className="h-[2.5px] w-[140px] sm:w-[170px] bg-[#10b981] mt-2.5 rounded-full"
+          />
         </div>
 
         {/* Five Leadership Portrait & Message Cards */}
-        <div className="flex flex-col gap-12 lg:gap-[50px]">
+        <div className="flex flex-col gap-10 sm:gap-12 lg:gap-[50px]">
           {LEADER_MESSAGES.map((leader) => (
             <article
               key={leader.id}
               id={leader.id}
-              className="scroll-mt-24 flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-12 xl:gap-[67px]"
+              className="scroll-mt-24 flex flex-col lg:flex-row lg:items-start gap-5 sm:gap-8 lg:gap-12 xl:gap-[67px]"
             >
-              {/* Left Colored Portrait Card */}
+              {/* Left Colored Portrait Card - Compact width on mobile */}
               <div
-                className={`relative w-full max-w-[424px] mx-auto lg:mx-0 lg:w-[424px] aspect-[424/578] lg:h-[578px] shrink-0 overflow-hidden ${leader.cardBgClass}`}
+                className={`relative w-[260px] xs:w-[275px] sm:w-[320px] lg:w-[424px] aspect-[424/560] lg:h-[578px] mx-auto lg:mx-0 shrink-0 overflow-hidden shadow-xs ${leader.cardBgClass}`}
               >
                 <img
                   src={leader.roleOverlay}
@@ -137,40 +139,40 @@ const LeadershipMessages: React.FC = () => {
               </div>
 
               {/* Right Message Content Column */}
-              <div className="flex-1 min-w-0 max-w-[735px] flex flex-col gap-[17px]">
+              <div className="flex-1 min-w-0 max-w-[735px] flex flex-col gap-2.5 sm:gap-3 lg:gap-[17px] px-1 sm:px-0">
                 {/* Header Block */}
-                <div className="flex flex-col gap-[21px]">
-                  <div className="flex flex-col gap-[12px] w-full max-w-[406px]">
-                    <h2 className="font-extrabold text-[26px] sm:text-[32px] leading-[1.25] sm:leading-[40px] tracking-[0px] text-[#073c96]">
+                <div className="flex flex-col gap-1.5 sm:gap-2.5">
+                  <div>
+                    <h2 className="font-bold text-[22px] xs:text-[24px] sm:text-[28px] lg:text-[32px] leading-tight text-[#073c96]">
                       {leader.name}
                     </h2>
                     <div
                       aria-hidden="true"
-                      className="h-[2px] w-full bg-[#10b981]"
+                      className="h-[2.5px] w-full bg-[#10b981] mt-2 mb-2.5 rounded-full"
                     />
                   </div>
 
-                  <div className="flex flex-col gap-[8px]">
-                    <p className="font-medium text-[18px] sm:text-[20px] leading-[24px] text-[#171717]">
+                  <div className="flex flex-col gap-0.5">
+                    <p className="font-semibold text-[13.5px] sm:text-[16px] lg:text-[18px] leading-snug text-[#1e293b]">
                       {leader.role}
                     </p>
-                    <p className="font-normal text-[15px] sm:text-[16px] leading-[26px] text-[#64748b]">
+                    <p className="font-normal text-[12px] sm:text-[14px] leading-snug text-[#64748b]">
                       {leader.subtitle}
                     </p>
                   </div>
                 </div>
 
                 {/* Quote Decoration + Body Copy */}
-                <div className="flex items-stretch lg:items-center gap-[16px] lg:min-h-[414px]">
+                <div className="flex items-start gap-2.5 sm:gap-3.5 mt-1 sm:mt-2">
                   <div
                     aria-hidden="true"
-                    className="hidden sm:flex flex-col items-start shrink-0 w-[41px] lg:h-[414px]"
+                    className="flex flex-col items-center shrink-0 w-[24px] sm:w-[32px] pt-0.5"
                   >
-                    <OpeningQuoteIcon className="w-[41px] h-[41px] text-[#e6e6e6]" />
-                    <div className="mt-[3px] ml-[30px] w-[1px] flex-1 bg-[#e6e6e6]" />
+                    <OpeningQuoteIcon className="w-[22px] h-[22px] sm:w-[26px] sm:h-[26px] text-[#cbd5e1]" />
+                    <div className="w-[1px] flex-1 min-h-[90px] bg-[#e2e8f0] mt-1" />
                   </div>
 
-                  <p className="flex-1 font-medium text-[16px] sm:text-[18px] leading-[30px] sm:leading-[36px] text-[#171717] text-justify">
+                  <p className="flex-1 font-normal text-[11.5px] xs:text-[12px] sm:text-[14px] lg:text-[16px] leading-[18px] xs:leading-[19px] sm:leading-[24px] lg:leading-[28px] text-[#334155] text-justify sm:text-left">
                     {leader.message}
                   </p>
                 </div>

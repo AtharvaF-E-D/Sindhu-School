@@ -23,10 +23,10 @@ const CurriculumHero: React.FC<CurriculumHeroProps> = ({ onExploreClick }) => {
   };
 
   return (
-    <section className="relative w-full bg-white overflow-x-clip pt-10 sm:pt-12 pb-12 lg:pt-[58px] lg:pb-[37px] select-none">
-      {/* Top-Right Green Circle (Figma 1:1731: 176 x 176 at x:1318, y:85, #40c843) */}
+    <section className="relative w-full bg-white overflow-x-clip pt-6 sm:pt-12 pb-10 sm:pb-12 lg:pt-[58px] lg:pb-[37px] select-none">
+      {/* Top-Right Green Circle (Desktop only) */}
       <div
-        className="hidden sm:block absolute -top-[19px] -right-[54px] w-[176px] h-[176px] rounded-full bg-[#40c843] pointer-events-none z-0"
+        className="hidden lg:block absolute -top-[19px] -right-[54px] w-[176px] h-[176px] rounded-full bg-[#40c843] pointer-events-none z-0"
         aria-hidden="true"
       />
 
@@ -64,72 +64,77 @@ const CurriculumHero: React.FC<CurriculumHeroProps> = ({ onExploreClick }) => {
         />
       </svg>
 
-      {/* Main 1224px Content Stage (Figma 1:1732: x:108, w:1224) */}
+      {/* Main Content Stage */}
       <div className="relative max-w-[1224px] mx-auto px-4 sm:px-6 xl:px-0 z-10">
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-10 lg:gap-8">
-          {/* LEFT COLUMN: Title, Description & CTA (Figma 1:1733: w:588, y:266) */}
+        <div className="flex flex-col lg:flex-row items-start lg:items-start justify-between gap-6 sm:gap-10 lg:gap-8">
+          {/* LEFT COLUMN: Title, Description & CTA with Background Smiley Watermark */}
           <div className="relative w-full lg:w-[588px] lg:pt-[104px] text-left">
-            {/* Background Smiley Watermark (Figma 1:1734: 176 x 176, left:428, top:72 rel stage) */}
+            {/* Background Smiley Watermark (Visible on Mobile & Desktop) */}
             <svg
-              className="hidden lg:block absolute left-[428px] top-[72px] w-[176px] h-[176px] opacity-30 pointer-events-none z-0"
+              className="absolute right-0 sm:right-6 lg:left-[428px] top-0 sm:top-4 lg:top-[72px] w-[130px] h-[130px] sm:w-[160px] sm:h-[160px] lg:w-[176px] lg:h-[176px] opacity-40 pointer-events-none z-0"
               viewBox="0 0 176 176"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
             >
-              <path
-                d="M8.80005 88C8.80005 131.712 44.2884 167.2 88 167.2C131.712 167.2 167.2 131.712 167.2 88C167.2 44.2884 131.712 8.80005 88 8.80005C44.2884 8.80005 8.80005 44.2884 8.80005 88V88"
+              <circle
+                cx="88"
+                cy="88"
+                r="79.2"
                 stroke="#D1D5DB"
-                strokeWidth="3.52"
+                strokeWidth="3.5"
               />
-              <path
-                d="M55.4404 70.3998C55.4404 74.1726 56.6145 77.6587 58.5204 79.5451C60.4263 81.4314 62.7745 81.4314 64.6804 79.5451C66.5863 77.6587 67.7604 74.1726 67.7604 70.3998C67.7604 66.6271 66.5863 63.141 64.6804 61.2546C62.7745 59.3683 60.4263 59.3683 58.5204 61.2546C56.6145 63.141 55.4404 66.6271 55.4404 70.3998V70.3998"
+              <ellipse
+                cx="61.6"
+                cy="70.4"
+                rx="6.16"
+                ry="9.24"
                 fill="#D1D5DB"
-                stroke="#D1D5DB"
-                strokeWidth="1.76"
               />
-              <path
-                d="M108.24 70.4001C108.24 74.1728 109.414 77.659 111.32 79.5453C113.226 81.4317 115.574 81.4317 117.48 79.5453C119.386 77.659 120.56 74.1728 120.56 70.4001C120.56 66.6274 119.386 63.1412 117.48 61.2549C115.574 59.3685 113.226 59.3685 111.32 61.2549C109.414 63.1412 108.24 66.6274 108.24 70.4001V70.4001"
+              <ellipse
+                cx="114.4"
+                cy="70.4"
+                rx="6.16"
+                ry="9.24"
                 fill="#D1D5DB"
-                stroke="#D1D5DB"
-                strokeWidth="1.76"
               />
               <path
-                d="M56.3203 109.12C77.4403 127.893 98.5603 127.893 119.68 109.12"
+                d="M56 108C76 128 100 128 120 108"
                 stroke="#D1D5DB"
-                strokeWidth="4.4"
+                strokeWidth="4"
                 strokeLinecap="round"
               />
             </svg>
 
-            {/* Headline (Figma 1:1741: w:480, 60px/54px ExtraBold -1.35px) */}
-            <h1 className="relative z-10 max-w-[480px] text-[42px] sm:text-[52px] lg:text-[60px] font-extrabold tracking-[-1.35px] leading-[1.08] lg:leading-[54px]">
+            {/* Headline */}
+            <h1 className="relative z-10 max-w-[480px] text-[28px] xs:text-[32px] sm:text-[52px] lg:text-[60px] font-extrabold tracking-[-1px] sm:tracking-[-1.35px] leading-[1.08] lg:leading-[54px]">
               <span className="text-[#1e2432]">Schools &amp; </span>
+              <br className="sm:hidden" />
               <span className="text-[#073c96]">Curriculum</span>
             </h1>
 
-            {/* Subtitle (Figma 1:1743: max-w:448, 16px/24px Regular #6b7280) */}
-            <p className="relative z-10 mt-5 lg:mt-[20px] max-w-[448px] text-[15px] sm:text-[16px] leading-[24px] text-[#6b7280] font-normal">
+            {/* Subtitle */}
+            <p className="relative z-10 mt-3 sm:mt-5 lg:mt-[20px] max-w-[448px] text-[12px] xs:text-[12.5px] sm:text-[16px] leading-[19px] sm:leading-[24px] text-[#6b7280] font-normal">
               Discover our diverse schools and comprehensive curriculum designed to
               inspire learning, nurture talent, and empower every student to achieve
               their full potential.
             </p>
 
-            {/* Primary CTA Button (Figma 1:1745: 150 x 40, #40c843) */}
-            <div className="relative z-10 mt-7 lg:mt-[32px]">
+            {/* Primary CTA Button */}
+            <div className="relative z-10 mt-4 sm:mt-7 lg:mt-[32px]">
               <button
                 type="button"
                 onClick={handleScrollToSchools}
-                className="inline-flex items-center justify-center w-[150px] h-[40px] rounded-full bg-[#40c843] hover:bg-[#36b339] text-white text-[12px] font-semibold leading-[16px] tracking-[0.3px] shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-all duration-200 cursor-pointer active:scale-95"
+                className="inline-flex items-center justify-center w-[130px] sm:w-[150px] h-[36px] sm:h-[40px] rounded-full bg-[#40c843] hover:bg-[#36b339] text-white text-[11px] sm:text-[12px] font-semibold leading-[16px] tracking-[0.3px] shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-all duration-200 cursor-pointer active:scale-95"
               >
                 See Our School
               </button>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: 2x2 Collage + Floating Pastel Dots (Figma 1:1747..1:1761: 480 x 480) */}
-          <div className="relative w-full max-w-[480px] lg:w-[480px] shrink-0">
-            {/* Decorative Floating Pastel Dots (positioned relative to 480x480 collage at x:852, y:162) */}
+          {/* RIGHT COLUMN: 2x2 Collage + Floating Pastel Dots */}
+          <div className="relative w-full max-w-[340px] xs:max-w-[360px] sm:max-w-[440px] lg:max-w-[480px] lg:w-[480px] shrink-0 mx-auto mt-4 sm:mt-8 lg:mt-0">
+            {/* Top-left subtle yellow dot */}
             <div
               className="hidden sm:block absolute left-[39px] -top-[12px] w-[15.86px] h-[14px] rounded-[19px] bg-[#fcc636] pointer-events-none"
               aria-hidden="true"
@@ -151,20 +156,27 @@ const CurriculumHero: React.FC<CurriculumHeroProps> = ({ onExploreClick }) => {
               aria-hidden="true"
             />
 
-            {/* 2x2 Grid (226.5 x 232 each, gap-x:27, gap-y:20 -> total 480 x 484) */}
-            <div className="grid grid-cols-2 gap-4 sm:gap-x-[27px] sm:gap-y-[20px]">
-              {/* Top-Left Oval (Figma 1:1761: 226.5 x 232, rounded-full) */}
-              <div className="group relative w-full aspect-[226.5/232] lg:w-[226.5px] lg:h-[232px] rounded-full overflow-hidden bg-slate-100">
-                <img
-                  src={schoolsHero1Img}
-                  alt="Sindhu School students running in sports day race"
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                  loading="eager"
+            {/* 2x2 Grid */}
+            <div className="grid grid-cols-2 gap-3 xs:gap-3.5 sm:gap-x-[27px] sm:gap-y-[20px]">
+              {/* Top-Left: Perfect Circle with lavender dot accent */}
+              <div className="relative">
+                <div className="group relative w-full aspect-square rounded-full overflow-hidden bg-slate-100 shadow-sm">
+                  <img
+                    src={schoolsHero1Img}
+                    alt="Sindhu School students running in sports day race"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    loading="eager"
+                  />
+                </div>
+                {/* Purple dot accent at bottom-left outside circle */}
+                <div
+                  className="absolute -left-1 bottom-1 sm:-left-2 sm:bottom-2 w-[16px] h-[16px] sm:w-[22px] sm:h-[22px] rounded-full bg-[#b6a6ce] pointer-events-none z-20 shadow-xs"
+                  aria-hidden="true"
                 />
               </div>
 
-              {/* Top-Right Rounded Rect (Figma 1:1754: 226.5 x 232, r:28) */}
-              <div className="group relative w-full aspect-[226.5/232] lg:w-[226.5px] lg:h-[232px] rounded-[28px] overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.05)] bg-slate-100">
+              {/* Top-Right: Rounded Rectangle */}
+              <div className="group relative w-full aspect-square rounded-[24px] sm:rounded-[28px] overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.05)] bg-slate-100">
                 <img
                   src={schoolsHero2Img}
                   alt="K.C. Bajaj College of Pharmacy and Research faculty office"
@@ -179,18 +191,25 @@ const CurriculumHero: React.FC<CurriculumHeroProps> = ({ onExploreClick }) => {
                 />
               </div>
 
-              {/* Bottom-Left Rounded Rect (Figma 1:1757: 226.5 x 232, r:28) */}
-              <div className="group relative w-full aspect-[226.5/232] lg:w-[226.5px] lg:h-[232px] rounded-[28px] overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.05)] bg-slate-100">
-                <img
-                  src={schoolsHero3Img}
-                  alt="Student balancing open book on head in library"
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                  loading="eager"
+              {/* Bottom-Left: Arch Top Image with cyan dot accent */}
+              <div className="relative">
+                <div className="group relative w-full aspect-square rounded-t-[44px] sm:rounded-t-[60px] rounded-b-[20px] sm:rounded-b-[28px] overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.05)] bg-slate-100">
+                  <img
+                    src={schoolsHero3Img}
+                    alt="Student balancing open book on head in library"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    loading="eager"
+                  />
+                </div>
+                {/* Cyan dot accent at bottom-left */}
+                <div
+                  className="absolute -left-1 bottom-4 sm:-left-2 sm:bottom-6 w-[14px] h-[14px] sm:w-[18px] sm:h-[18px] rounded-full bg-[#5fb2c9] pointer-events-none z-20 shadow-xs"
+                  aria-hidden="true"
                 />
               </div>
 
-              {/* Bottom-Right Arch Corner Rect (Figma 1:1760: 226.5 x 232, radii 114/10/10/10) */}
-              <div className="group relative w-full aspect-[226.5/232] lg:w-[226.5px] lg:h-[232px] rounded-tl-[84px] sm:rounded-tl-[114px] rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px] overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.05)] bg-slate-100">
+              {/* Bottom-Right: Curved Top-Left Corner Rect */}
+              <div className="group relative w-full aspect-square rounded-tl-[54px] sm:rounded-tl-[84px] lg:rounded-tl-[114px] rounded-tr-[20px] rounded-br-[20px] rounded-bl-[20px] sm:rounded-tr-[24px] sm:rounded-br-[24px] sm:rounded-bl-[24px] overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.05)] bg-slate-100">
                 <img
                   src={schoolsHero4Img}
                   alt="Young student painting creatively in arts class"

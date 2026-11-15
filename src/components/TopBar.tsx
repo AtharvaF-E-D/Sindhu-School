@@ -12,7 +12,7 @@ const TopBar: React.FC<TopBarProps> = ({
   phone = "+12 (123) 456 78900",
 }) => {
   return (
-    <header className="w-full bg-[#073c96] text-white text-xs sm:text-[13px] font-normal leading-normal select-none">
+    <header className="hidden md:block w-full bg-[#073c96] text-white text-xs sm:text-[13px] font-normal leading-normal select-none">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-col md:flex-row items-center justify-between gap-2.5">
         {/* Left: Location */}
         <div className="flex items-center gap-2 text-white/90 hover:text-white transition-colors">
