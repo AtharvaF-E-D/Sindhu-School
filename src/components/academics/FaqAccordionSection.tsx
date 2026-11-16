@@ -78,24 +78,24 @@ const FaqAccordionSection: React.FC = () => {
     <section
       id="faq-questions"
       aria-labelledby="faq-section-heading"
-      className="w-full bg-white pt-14 sm:pt-20 lg:pt-[123px] pb-12 sm:pb-16 lg:pb-[96px]"
+      className="w-full bg-white pt-12 sm:pt-20 lg:pt-[123px] pb-10 sm:pb-16 lg:pb-[96px]"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-[74px]">
         {/* HeaderSection */}
-        <div className="w-full pt-[6px] flex flex-col items-center text-center gap-[20px]">
-          <p className="text-[11px] leading-[16.5px] font-bold tracking-[2.75px] uppercase text-[#334155]">
+        <div className="w-full pt-[6px] flex flex-col items-center text-center gap-2 sm:gap-[20px]">
+          <p className="text-[10px] sm:text-[11px] leading-[15px] sm:leading-[16.5px] font-bold tracking-[2px] sm:tracking-[2.75px] uppercase text-[#334155]">
             Feel free to contact us
           </p>
           <h2
             id="faq-section-heading"
-            className="max-w-[518px] text-[36px] sm:text-[46px] lg:text-[56px] leading-[1.06] lg:leading-[56px] font-bold tracking-[-1.4px] text-[#0f172a]"
+            className="max-w-[518px] text-[20px] xs:text-[22px] sm:text-[36px] lg:text-[56px] leading-[26px] sm:leading-[44px] lg:leading-[56px] font-bold tracking-tight lg:tracking-[-1.4px] text-[#0f172a]"
           >
             Do You Have Any Questions?
           </h2>
         </div>
 
         {/* AccordionList */}
-        <div className="mt-[48px] w-full flex flex-col gap-[14px]">
+        <div className="mt-6 sm:mt-10 lg:mt-[48px] w-full flex flex-col gap-2.5 sm:gap-[14px]">
           {FAQ_ITEMS.map((item, idx) => {
             const isOpen = openIndex === idx;
             const panelId = `${item.id}-panel`;
@@ -107,8 +107,8 @@ const FaqAccordionSection: React.FC = () => {
                 id={item.id}
                 className={
                   isOpen
-                    ? "w-full bg-white border border-[#e2e8f0]/70 rounded-[24px] shadow-[0_4px_25px_-5px_rgba(0,0,0,0.03)] transition-all duration-200"
-                    : "w-full bg-[#ecf2fa]/85 border border-[#e2eaf5] rounded-[24px] sm:rounded-full transition-all duration-200"
+                    ? "w-full bg-white border border-[#e2e8f0]/70 rounded-[18px] sm:rounded-[24px] shadow-[0_4px_25px_-5px_rgba(0,0,0,0.03)] transition-all duration-200"
+                    : "w-full bg-[#ecf2fa]/85 border border-[#e2eaf5] rounded-[18px] sm:rounded-full transition-all duration-200"
                 }
               >
                 <button
@@ -119,11 +119,11 @@ const FaqAccordionSection: React.FC = () => {
                   onClick={() => toggleItem(idx)}
                   className={
                     isOpen
-                      ? "w-full px-5 sm:px-[28px] pt-5 sm:pt-[24px] pb-[8px] flex items-center justify-between gap-4 text-left cursor-pointer"
-                      : "w-full min-h-[64px] px-5 sm:px-[28px] py-[14px] flex items-center justify-between gap-4 text-left cursor-pointer"
+                      ? "w-full px-3.5 sm:px-[28px] pt-3.5 sm:pt-[24px] pb-[8px] flex items-center justify-between gap-3 sm:gap-4 text-left cursor-pointer"
+                      : "w-full min-h-[48px] sm:min-h-[64px] px-3.5 sm:px-[28px] py-2 sm:py-[14px] flex items-center justify-between gap-3 sm:gap-4 text-left cursor-pointer"
                   }
                 >
-                  <span className="text-[15px] sm:text-[16.5px] leading-[22.69px] font-semibold text-[#0f172a]">
+                  <span className="text-[12px] xs:text-[12.5px] sm:text-[15px] lg:text-[16.5px] leading-[17px] sm:leading-[22.69px] font-semibold text-[#0f172a]">
                     {item.question}
                   </span>
 
@@ -131,15 +131,15 @@ const FaqAccordionSection: React.FC = () => {
                     aria-hidden="true"
                     className={
                       isOpen
-                        ? "w-[36px] h-[36px] shrink-0 rounded-full bg-[#e8eef8] flex items-center justify-center text-[#334155]"
-                        : "w-[36px] h-[36px] shrink-0 rounded-full bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] flex items-center justify-center text-[#334155]"
+                        ? "w-[26px] h-[26px] sm:w-[36px] sm:h-[36px] shrink-0 rounded-full bg-[#e8eef8] flex items-center justify-center text-[#334155]"
+                        : "w-[26px] h-[26px] sm:w-[36px] sm:h-[36px] shrink-0 rounded-full bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] flex items-center justify-center text-[#334155]"
                     }
                   >
                     {isOpen ? (
                       <svg
                         viewBox="0 0 14 14"
                         fill="none"
-                        className="w-[14px] h-[14px]"
+                        className="w-[12px] h-[12px] sm:w-[14px] sm:h-[14px]"
                       >
                         <path
                           d="M3.5 3.5L10.5 10.5M10.5 3.5L3.5 10.5"
@@ -152,7 +152,7 @@ const FaqAccordionSection: React.FC = () => {
                       <svg
                         viewBox="0 0 14 14"
                         fill="none"
-                        className="w-[14px] h-[14px]"
+                        className="w-[12px] h-[12px] sm:w-[14px] sm:h-[14px]"
                       >
                         <path
                           d="M7 2.333v9.334M2.333 7h9.334"
@@ -170,9 +170,9 @@ const FaqAccordionSection: React.FC = () => {
                     id={panelId}
                     role="region"
                     aria-labelledby={buttonId}
-                    className="px-5 sm:px-[28px] pt-[3.25px] pb-5 sm:pb-[24px]"
+                    className="px-3.5 sm:px-[28px] pt-[2px] pb-3.5 sm:pb-[24px]"
                   >
-                    <p className="max-w-[971px] text-[14px] leading-[22.75px] font-normal text-[#64748b]">
+                    <p className="max-w-[971px] text-[10.5px] xs:text-[11px] sm:text-[14px] leading-[16px] sm:leading-[22.75px] font-normal text-[#64748b]">
                       {item.answer}
                     </p>
                   </div>

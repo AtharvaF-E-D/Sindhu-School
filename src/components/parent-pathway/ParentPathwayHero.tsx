@@ -9,9 +9,9 @@ const ParentPathwayHero: React.FC = () => {
       aria-labelledby="parent-pathway-hero-heading"
       className="w-full bg-white overflow-x-clip"
     >
-      <div className="max-w-[1440px] mx-auto relative px-4 sm:px-8 lg:px-12 pt-10 pb-12 xl:px-0 xl:pt-0 xl:pb-0 xl:h-[713px]">
-        {/* Left Column: Copy & CTAs (Figma 37:2125: x=122, y=228 -> 124px below header) */}
-        <div className="w-full max-w-[601px] mx-auto xl:mx-0 xl:max-w-[723px] xl:pl-[122px] xl:pt-[124px] text-center xl:text-left">
+      <div className="max-w-[1440px] mx-auto relative px-4 sm:px-8 lg:px-12 pt-3 pb-4 xl:px-0 xl:pt-0 xl:pb-0 xl:h-[713px]">
+        {/* Left Column: Copy & CTAs - Hidden on mobile to match mobile reference, visible on xl: desktop */}
+        <div className="hidden xl:block w-full max-w-[601px] mx-auto xl:mx-0 xl:max-w-[723px] xl:pl-[122px] xl:pt-[124px] text-center xl:text-left">
           <p className="pt-[8px] text-[14px] sm:text-[15px] leading-[24px] font-normal text-[#737373] max-w-[518px] mx-auto xl:mx-0">
             WELCOME TO THE PARENT PATHWAY
           </p>
@@ -41,7 +41,7 @@ const ParentPathwayHero: React.FC = () => {
         </div>
 
         {/* Right Collage Column (Figma 37:2141: origin x=801, y=163 -> top=59px, width=507, height=520) */}
-        <div className="mt-10 xl:mt-0 xl:absolute xl:left-[801px] xl:top-[59px] w-full max-w-[507px] mx-auto xl:mx-0 aspect-[507/520] xl:w-[507px] xl:h-[520px] relative">
+        <div className="mt-2 sm:mt-6 xl:mt-0 xl:absolute xl:left-[801px] xl:top-[59px] w-full max-w-[340px] xs:max-w-[380px] sm:max-w-[460px] xl:max-w-[507px] mx-auto xl:mx-0 aspect-[507/520] xl:w-[507px] xl:h-[520px] relative">
           {/* Decorative Soft Lilac Dot: Top Right (37:2142) */}
           <div
             aria-hidden="true"

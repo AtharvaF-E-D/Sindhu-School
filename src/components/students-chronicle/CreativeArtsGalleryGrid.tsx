@@ -133,7 +133,7 @@ const TileCard: React.FC<TileCardProps> = ({ tile, className, onSelect }) => {
       type="button"
       onClick={() => onSelect(index)}
       aria-label={`Open photo: ${tile.alt}`}
-      className={`group relative block w-full overflow-hidden rounded-[16px] bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#073c96] ${className}`}
+      className={`group relative block w-full overflow-hidden rounded-[8px] sm:rounded-[16px] bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#073c96] ${className}`}
     >
       <img
         src={tile.src}
@@ -174,15 +174,15 @@ const CreativeArtsGalleryGrid: React.FC = () => {
       aria-label="Creative Arts & Student Life Photo Gallery"
       className="w-full bg-white"
     >
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-10 xl:pl-[56px] xl:pr-[57px] py-10 sm:py-12 lg:pt-[65px] lg:pb-[88px]">
+      <div className="max-w-[1440px] mx-auto px-3 sm:px-8 lg:px-10 xl:pl-[56px] xl:pr-[57px] py-4 sm:py-12 lg:pt-[65px] lg:pb-[88px]">
         {/* Band 1: Large left tile + 2x2 sub-grid on right (Figma y=751..1301) */}
-        <div className="grid grid-cols-1 lg:grid-cols-[582fr_727fr] gap-4 lg:gap-[18px]">
+        <div className="grid grid-cols-1 lg:grid-cols-[582fr_727fr] gap-2.5 sm:gap-4 lg:gap-[18px]">
           <TileCard
             tile={BAND_ONE_LEFT}
-            className="aspect-[582/550] lg:aspect-auto lg:h-full xl:h-[550px]"
+            className="aspect-[582/380] sm:aspect-[582/550] lg:aspect-auto lg:h-full xl:h-[550px]"
             onSelect={setActiveIndex}
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-x-[17px] lg:gap-y-[18px]">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:gap-x-[17px] lg:gap-y-[18px]">
             {BAND_ONE_GRID.map((tile) => (
               <TileCard
                 key={tile.id}
@@ -195,7 +195,7 @@ const CreativeArtsGalleryGrid: React.FC = () => {
         </div>
 
         {/* Band 2: Two wide horizontal tiles (Figma y=1326..1724) */}
-        <div className="mt-4 lg:mt-[25px] xl:pr-[1px] grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-[16px]">
+        <div className="mt-2.5 sm:mt-4 lg:mt-[25px] xl:pr-[1px] grid grid-cols-2 gap-2.5 sm:gap-4 lg:gap-[16px]">
           {BAND_TWO.map((tile) => (
             <TileCard
               key={tile.id}
@@ -207,7 +207,7 @@ const CreativeArtsGalleryGrid: React.FC = () => {
         </div>
 
         {/* Band 3: Three equal stage/celebration tiles (Figma y=1749..2070) */}
-        <div className="mt-4 lg:mt-[25px] xl:pr-[1px] grid grid-cols-1 md:grid-cols-3 lg:grid-cols-[428fr_427fr_428fr] gap-4 lg:gap-[21.5px]">
+        <div className="mt-2.5 sm:mt-4 lg:mt-[25px] xl:pr-[1px] grid grid-cols-3 md:grid-cols-3 lg:grid-cols-[428fr_427fr_428fr] gap-2.5 sm:gap-4 lg:gap-[21.5px]">
           {BAND_THREE.map((tile) => (
             <TileCard
               key={tile.id}
@@ -219,8 +219,8 @@ const CreativeArtsGalleryGrid: React.FC = () => {
         </div>
 
         {/* Band 4: 2x2 sub-grid on left + large right tile (Figma y=2095..2645) */}
-        <div className="mt-4 lg:mt-[25px] xl:pr-[1px] grid grid-cols-1 lg:grid-cols-[727fr_582fr] gap-4 lg:gap-[17px]">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-x-[17px] lg:gap-y-[18px]">
+        <div className="mt-2.5 sm:mt-4 lg:mt-[25px] xl:pr-[1px] grid grid-cols-1 lg:grid-cols-[727fr_582fr] gap-2.5 sm:gap-4 lg:gap-[17px]">
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:gap-x-[17px] lg:gap-y-[18px]">
             {BAND_FOUR_GRID.map((tile) => (
               <TileCard
                 key={tile.id}
@@ -232,7 +232,7 @@ const CreativeArtsGalleryGrid: React.FC = () => {
           </div>
           <TileCard
             tile={BAND_FOUR_RIGHT}
-            className="aspect-[582/550] lg:aspect-auto lg:h-full xl:h-[550px]"
+            className="aspect-[582/380] sm:aspect-[582/550] lg:aspect-auto lg:h-full xl:h-[550px]"
             onSelect={setActiveIndex}
           />
         </div>

@@ -4,14 +4,14 @@ const SesChroniclesBanner: React.FC = () => {
   return (
     <section
       id="life-at-ses"
-      className="w-full bg-white pb-12 sm:pb-16 lg:pb-[109px] select-none"
+      className="w-full bg-white pt-2 sm:pt-6 lg:pt-0 pb-8 sm:pb-16 lg:pb-[109px] select-none"
     >
-      <div className="max-w-[1305px] mx-auto px-4 xl:px-0">
+      <div className="max-w-[1305px] mx-auto px-3.5 sm:px-6 xl:px-0">
         {/* Blue Rounded Quote Banner (Figma 33:1401: 1305 x 536, rounded:51px, #073c96) */}
-        <div className="relative w-full lg:min-h-[536px] rounded-[28px] sm:rounded-[38px] lg:rounded-[51px] bg-[#073c96] px-6 sm:px-10 py-10 sm:py-14 lg:pt-[84px] lg:pb-[83px] lg:pl-[158px] lg:pr-[100px]">
+        <div className="relative w-full lg:min-h-[536px] rounded-[24px] sm:rounded-[38px] lg:rounded-[51px] bg-[#073c96] px-5 sm:px-10 py-7 sm:py-14 lg:pt-[84px] lg:pb-[83px] lg:pl-[158px] lg:pr-[100px] shadow-sm">
           {/* Decorative Opening Quote Icon (Figma 33:1402: x:129->left:61, y:812->top:84, #0049c4) */}
           <svg
-            className="w-[42px] h-[30px] lg:w-[58px] lg:h-[42px] mb-5 lg:mb-0 lg:absolute lg:left-[61px] lg:top-[84px] pointer-events-none shrink-0"
+            className="w-[28px] h-[20px] sm:w-[42px] sm:h-[30px] lg:w-[58px] lg:h-[42px] mb-3 sm:mb-5 lg:mb-0 lg:absolute lg:left-[61px] lg:top-[84px] pointer-events-none shrink-0"
             viewBox="0 0 58 42"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -27,22 +27,22 @@ const SesChroniclesBanner: React.FC = () => {
 
           {/* Content Column (Figma 33:1404: x:226, y:812) */}
           <div className="w-full">
-            <h2 className="text-[26px] sm:text-[30px] lg:text-[32px] font-extrabold leading-[1.2] lg:leading-[40px] text-white">
+            <h2 className="text-[20px] xs:text-[22px] sm:text-[30px] lg:text-[32px] font-extrabold leading-[1.2] lg:leading-[40px] text-white">
               SES Chronicles
             </h2>
 
             <div
-              className="w-full max-w-[877px] h-[2px] bg-white mt-4 mb-5 lg:mt-[19px] lg:mb-[21px]"
+              className="w-full max-w-[877px] h-[1.5px] sm:h-[2px] bg-white/90 mt-2.5 mb-3.5 sm:mt-4 sm:mb-5 lg:mt-[19px] lg:mb-[21px]"
               aria-hidden="true"
             />
 
-            <p className="max-w-[969px] text-[17px] sm:text-[20px] lg:text-[24px] font-normal leading-[1.6] lg:leading-[41px] text-white">
+            <p className="max-w-[969px] text-[11px] xs:text-[11.5px] sm:text-[16px] lg:text-[24px] font-normal leading-[17px] xs:leading-[18px] sm:leading-[26px] lg:leading-[41px] text-white/95">
               Welcome to the enchanting world of SES Chronicles, where every
               page is a treasure trove of tales that showcase the incredible
               academic and emotional growth of our students. From the very first
               day of Kindergarten to the bittersweet final moments of High School,
               these chronicles beautifully capture the remarkable journey.
-              <br />
+              <br className="mb-2" />
               As you delve deeper into the SES Chronicles, you&rsquo;ll witness
               the transformative power of our inclusive community. The stories
               within these pages showcase the diverse backgrounds, talents, and

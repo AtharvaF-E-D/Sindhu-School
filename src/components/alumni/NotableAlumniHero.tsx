@@ -8,7 +8,7 @@ const NotableAlumniHero: React.FC = () => {
       aria-labelledby="notable-alumni-hero-heading"
       className="w-full bg-white lg:pt-[14px]"
     >
-      <div className="relative w-full h-[380px] sm:h-[460px] lg:h-[568px] overflow-hidden bg-[#171717]">
+      <div className="relative w-full h-[220px] xs:h-[240px] sm:h-[460px] lg:h-[568px] overflow-hidden bg-[#171717]">
         {/* Background alumni assembly photo matching Figma 37:2813 */}
         <img
           src={notableHeroImg}
@@ -24,15 +24,15 @@ const NotableAlumniHero: React.FC = () => {
           <div className="w-full max-w-[631px] mx-auto text-center">
             <h1
               id="notable-alumni-hero-heading"
-              className="font-extrabold text-[36px] sm:text-[44px] lg:text-[48px] leading-[1.12] lg:leading-[54px] tracking-[-1.35px] text-white"
+              className="font-extrabold text-[20px] xs:text-[22px] sm:text-[44px] lg:text-[48px] leading-[1.2] lg:leading-[54px] tracking-tight sm:tracking-[-1.35px] text-white"
             >
               Alumni Connect
             </h1>
 
-            <div className="mt-[32px] flex justify-center">
+            <div className="mt-3.5 sm:mt-[32px] flex justify-center">
               <a
                 href="#alumni-connect"
-                className="px-[28px] h-[40px] rounded-full bg-[#40c843] shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] hover:bg-[#38b53b] transition-colors inline-flex items-center justify-center text-[12px] leading-[16px] font-semibold tracking-[0.3px] text-white"
+                className="px-4 xs:px-5 sm:px-[28px] h-[30px] sm:h-[40px] rounded-full bg-[#40c843] shadow-[0_1px_2px_0_rgba(0,0,0,0.05)] hover:bg-[#38b53b] transition-colors inline-flex items-center justify-center text-[10px] xs:text-[11px] sm:text-[12px] leading-[16px] font-semibold tracking-[0.3px] text-white"
               >
                 Apply for Alumni
               </a>
