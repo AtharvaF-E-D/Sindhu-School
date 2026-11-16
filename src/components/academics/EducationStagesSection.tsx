@@ -16,6 +16,7 @@ interface EducationStage {
   titleBoxClass: string;
   titleGapClass: string;
   contentGapClass: string;
+  mobileCenter?: boolean;
 }
 
 const EDUCATION_STAGES: EducationStage[] = [
@@ -31,6 +32,7 @@ const EDUCATION_STAGES: EducationStage[] = [
     titleBoxClass: "lg:min-h-[83px]",
     titleGapClass: "gap-[13px]",
     contentGapClass: "gap-[21px]",
+    mobileCenter: false,
   },
   {
     id: "nursery-and-kindergarten",
@@ -44,6 +46,7 @@ const EDUCATION_STAGES: EducationStage[] = [
     titleBoxClass: "lg:min-h-[65px]",
     titleGapClass: "gap-[15px]",
     contentGapClass: "gap-[20px]",
+    mobileCenter: true,
   },
   {
     id: "primary-and-middle-school",
@@ -58,6 +61,7 @@ const EDUCATION_STAGES: EducationStage[] = [
     titleBoxClass: "lg:min-h-[83px]",
     titleGapClass: "gap-[13px]",
     contentGapClass: "gap-[5px]",
+    mobileCenter: false,
   },
   {
     id: "junior-college",
@@ -71,6 +75,7 @@ const EDUCATION_STAGES: EducationStage[] = [
     titleBoxClass: "lg:min-h-[65px]",
     titleGapClass: "gap-[15px]",
     contentGapClass: "gap-[20px]",
+    mobileCenter: true,
   },
   {
     id: "senior-college",
@@ -84,6 +89,7 @@ const EDUCATION_STAGES: EducationStage[] = [
     titleBoxClass: "lg:min-h-[83px]",
     titleGapClass: "gap-[13px]",
     contentGapClass: "gap-[5px]",
+    mobileCenter: true,
   },
 ];
 
@@ -92,7 +98,7 @@ const EducationStagesSection: React.FC = () => {
     <section
       id="education-stages"
       aria-label="Academic Stages Approach"
-      className="w-full flex flex-col gap-[18px] mb-8 lg:mb-[55px]"
+      className="w-full flex flex-col gap-3.5 sm:gap-[18px] mb-8 lg:mb-[55px]"
     >
       {EDUCATION_STAGES.map((stage) => (
         <article
@@ -100,9 +106,9 @@ const EducationStagesSection: React.FC = () => {
           id={stage.id}
           className={`w-full ${stage.bgClass} lg:min-h-[415px] flex items-center`}
         >
-          <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:pl-[119px] lg:pr-[129px] py-8 lg:pt-[36px] lg:pb-[37px]">
-            <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-[65px]">
-              <div className="w-full max-w-[428px] lg:w-[428px] aspect-[428/342] lg:h-[342px] shrink-0 rounded-[21px] overflow-hidden">
+          <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:pl-[119px] lg:pr-[129px] py-4 sm:py-6 lg:pt-[36px] lg:pb-[37px]">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-3.5 sm:gap-6 lg:gap-[65px]">
+              <div className="w-full max-w-[340px] xs:max-w-[380px] sm:max-w-[428px] lg:w-[428px] aspect-[16/11] sm:aspect-[428/342] lg:h-[342px] shrink-0 rounded-[16px] xs:rounded-[18px] sm:rounded-[21px] overflow-hidden mx-auto lg:mx-0 shadow-xs">
                 <img
                   src={stage.image}
                   alt={stage.imageAlt}
@@ -111,21 +117,23 @@ const EducationStagesSection: React.FC = () => {
               </div>
 
               <div
-                className={`w-full lg:w-[699px] flex flex-col ${stage.contentGapClass}`}
+                className={`w-full lg:w-[699px] flex flex-col gap-2 sm:gap-3 lg:${stage.contentGapClass}`}
               >
-                <div className={`flex flex-col ${stage.titleGapClass}`}>
+                <div className={`flex flex-col gap-1.5 sm:gap-2.5 lg:${stage.titleGapClass}`}>
                   <h2
-                    className={`font-semibold text-[24px] sm:text-[28px] lg:text-[32px] leading-[1.2] lg:leading-[34px] tracking-[0px] text-[#171717] ${stage.titleBoxClass}`}
+                    className={`font-bold lg:font-semibold text-[14.5px] xs:text-[15.5px] sm:text-[22px] lg:text-[32px] leading-[19px] xs:leading-[20px] sm:leading-[28px] lg:leading-[34px] tracking-normal text-[#171717] ${
+                      stage.mobileCenter ? "text-center lg:text-left" : "text-left"
+                    } ${stage.titleBoxClass}`}
                   >
                     {stage.title}
                   </h2>
                   <div
                     aria-hidden="true"
-                    className={`w-full h-[2px] ${stage.dividerClass}`}
+                    className={`w-full h-[1.5px] sm:h-[2px] ${stage.dividerClass}`}
                   />
                 </div>
 
-                <p className="lg:max-w-[689px] font-medium text-[16px] sm:text-[18px] leading-[28px] sm:leading-[32px] tracking-[0px] text-[#64748b] sm:text-justify">
+                <p className="lg:max-w-[689px] font-normal text-[11px] xs:text-[11.5px] sm:text-[15px] lg:text-[18px] leading-[16.5px] xs:leading-[17px] sm:leading-[24px] lg:leading-[32px] tracking-normal text-[#64748b] text-left sm:text-justify">
                   {stage.description}
                 </p>
               </div>
