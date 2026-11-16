@@ -60,7 +60,7 @@ const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ currentPage, onMenuTo
   const activeTab = currentPage ? getTabFromPageOrHash(currentPage) : hashTab;
 
   const handleNavClick = (tab: string, href: string) => {
-    setActiveTab(tab);
+    setHashTab(tab);
     setMenuOpen(false);
     if (href === "#home") {
       window.scrollTo({ top: 0, behavior: "smooth" });

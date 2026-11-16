@@ -17,7 +17,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   titleLine2 = "meets legacy!",
   highlightYear = "Since 1952",
   subtitle = "Sindhu Education Society’s glorious journey from humble beginnings to a premier educational institution in North Nagpur.",
-  ctaText = "Admissions Open for AY 2017–28",
+  ctaText = "Admissions Open for AY 2027–28",
   ctaHref = "#admissions",
 }) => {
   return (

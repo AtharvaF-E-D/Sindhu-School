@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import avatarKaran from "../../assets/avatar-karan.png";
 import avatarCatherine from "../../assets/avatar-catherine.png";
 import avatarPeter from "../../assets/avatar-peter.png";
@@ -17,7 +17,7 @@ const feedbacks: FeedbackItem[] = [
     id: 1,
     name: "Karan",
     time: "1 week ago",
-    text: "My buying experience is so nice, and received me very politely. Riding experience is also very good. Very good performance. I never experienced such a kind of performance. Very good service.",
+    text: "Our experience with the school has been wonderful, and the teachers welcomed us politely. Academic guidance is very strong with personal attention. My child enjoys every classroom activity and never felt left behind.",
     avatar: avatarKaran,
     stars: 5,
   },
@@ -25,7 +25,7 @@ const feedbacks: FeedbackItem[] = [
     id: 2,
     name: "Catherine",
     time: "10 days ago",
-    text: "I love my e-bike and the customer service is excellent. They respond in a timely manner with loads of information about e-bikes, accessories and maintenance information.",
+    text: "I love the supportive faculty and parent communication is excellent. They respond in a timely manner with complete updates on student progress, co-curricular clubs, and holistic learning programs.",
     avatar: avatarCatherine,
     stars: 5,
   },
@@ -56,42 +56,101 @@ const feedbacks: FeedbackItem[] = [
 ];
 
 const ExploreFeedback: React.FC = () => {
-  const [startIndex, setStartIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const thumbRef = useRef<HTMLDivElement>(null);
 
-  const handlePrev = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -280, behavior: "smooth" });
+  const [progressRatio, setProgressRatio] = useState(0);
+  const [maxTravel, setMaxTravel] = useState(48);
+
+  // Recalculate track movement limits on mount & resize
+  const updateTravelDistance = useCallback(() => {
+    if (trackRef.current && thumbRef.current) {
+      const trackW = trackRef.current.clientWidth;
+      const thumbW = thumbRef.current.clientWidth;
+      setMaxTravel(Math.max(trackW - thumbW, 0));
     }
-    setStartIndex((prev) => (prev <= 0 ? feedbacks.length - 1 : prev - 1));
-  };
+  }, []);
 
-  const handleNext = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 280, behavior: "smooth" });
+  // Update progress ratio on scroll
+  const handleScroll = useCallback(() => {
+    if (!scrollRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    const maxScroll = scrollWidth - clientWidth;
+    if (maxScroll <= 0) {
+      setProgressRatio(0);
+      return;
     }
-    setStartIndex((prev) => (prev >= feedbacks.length - 1 ? 0 : prev + 1));
-  };
+    const ratio = Math.min(Math.max(scrollLeft / maxScroll, 0), 1);
+    setProgressRatio(ratio);
+  }, []);
 
-  const progressOffset = (startIndex / Math.max(feedbacks.length - 1, 1)) * 48;
+  useEffect(() => {
+    updateTravelDistance();
+    window.addEventListener("resize", updateTravelDistance);
+    return () => window.removeEventListener("resize", updateTravelDistance);
+  }, [updateTravelDistance]);
+
+  // Navigate next or prev by one card step with smooth wrap-around
+  const handleScrollStep = (direction: "next" | "prev") => {
+    if (!scrollRef.current) return;
+    const container = scrollRef.current;
+    const { scrollLeft, scrollWidth, clientWidth } = container;
+    const maxScroll = scrollWidth - clientWidth;
+
+    if (maxScroll <= 0) return;
+
+    // Calculate step width dynamically from DOM nodes for precision across responsive screen sizes
+    const firstCard = container.firstElementChild as HTMLElement | null;
+    const secondCard = firstCard?.nextElementSibling as HTMLElement | null;
+    const step = secondCard && firstCard
+      ? secondCard.offsetLeft - firstCard.offsetLeft
+      : 331.25;
+
+    if (direction === "next") {
+      // If near the end, loop smoothly back to start
+      if (scrollLeft >= maxScroll - 15) {
+        container.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        container.scrollTo({
+          left: Math.min(scrollLeft + step, maxScroll),
+          behavior: "smooth",
+        });
+      }
+    } else {
+      // If near the beginning, loop smoothly to the end
+      if (scrollLeft <= 15) {
+        container.scrollTo({ left: maxScroll, behavior: "smooth" });
+      } else {
+        container.scrollTo({
+          left: Math.max(scrollLeft - step, 0),
+          behavior: "smooth",
+        });
+      }
+    }
+  };
 
   return (
     <section
       id="feedback"
-      className="w-full bg-[#f6f9fe] py-10 sm:py-14 lg:py-0 lg:h-[584px] flex items-center select-none overflow-hidden"
+      className="w-full bg-[#f6f9fe] py-12 sm:py-16 lg:py-0 lg:h-[584px] flex items-center select-none overflow-hidden"
       aria-label="Explore Genuine Feedback"
     >
       <div className="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:pl-[68px] lg:pr-[24px]">
         <div className="flex flex-col lg:flex-row lg:items-center gap-6 sm:gap-8 lg:gap-0">
           {/* Left Intro Column */}
-          <div className="w-full lg:w-[295px] lg:mr-[40px] lg:pt-[8px] lg:pb-[16px] shrink-0">
-            {/* Grey Double Quote Icon */}
+          <div className="w-full lg:w-[295.25px] lg:mr-[40px] lg:pt-[8px] lg:pb-[16px] shrink-0">
+            {/* Grey Double Quote Icon directly from Figma design */}
             <svg
-              className="w-[44px] h-[34px] sm:w-[52px] sm:h-[40px] text-[#b0b7c3] mb-4 sm:mb-5 fill-current"
-              viewBox="0 0 48 38"
+              className="w-[44px] h-[44px] sm:w-[56px] sm:h-[56px] text-[#9ca3af] mb-4 sm:mb-5 fill-current"
+              viewBox="0 0 56 56"
+              fill="none"
               aria-hidden="true"
             >
-              <path d="M0 22.8C0 10.2 8.4 0 21.6 0v7.2C14.4 7.2 9.6 12 9.6 19.2h12V38H0V22.8zm26.4 0C26.4 10.2 34.8 0 48 0v7.2c-7.2 0-12 4.8-12 12h12V38H26.4V22.8z" />
+              <path
+                d="M32.7063 49V31.7543C32.7063 18.445 41.412 9.42433 53.6667 7L55.9883 12.019C50.3137 14.1587 46.6667 20.5077 46.6667 25.6667H56V49H32.7063V49M0 49V31.7543C0 18.445 8.74533 9.42433 21 7L23.324 12.019C17.647 14.1587 14 20.5077 14 25.6667H23.2937V49H0V49"
+                fill="currentColor"
+              />
             </svg>
 
             <h2 className="text-[26px] sm:text-[28px] lg:text-[30px] font-bold leading-[32px] sm:leading-[36px] tracking-[-0.75px] text-[#16181b]">
@@ -101,71 +160,106 @@ const ExploreFeedback: React.FC = () => {
             </h2>
 
             {/* Slider Controls */}
-            <div className="mt-5 sm:mt-8 lg:mt-[95.5px] flex items-center gap-[16px]">
+            <div className="mt-5 sm:mt-8 lg:mt-[95px] flex items-center gap-[16px]">
               <button
                 type="button"
-                onClick={handlePrev}
-                className="w-[24px] h-[24px] flex items-center justify-center text-[#16181b] hover:opacity-60 transition-opacity cursor-pointer"
+                onClick={() => handleScrollStep("prev")}
+                className="w-[24px] h-[24px] flex items-center justify-center text-[#737373] hover:text-[#16181b] transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#16181b] rounded"
                 aria-label="Previous review"
               >
-                <svg className="w-[18px] h-[18px] stroke-current" fill="none" strokeWidth="2.2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5m0 0l6 6m-6-6l6-6" />
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path
+                    d="M8.75 16.25L2.5 10M2.5 10L8.75 3.75M2.5 10H17.5"
+                    strokeWidth="1.67"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    stroke="currentColor"
+                  />
                 </svg>
               </button>
 
               {/* Progress Track */}
-              <div className="relative w-[70px] sm:w-[80px] h-[3px] bg-[#e2e8f0] rounded-full overflow-hidden">
+              <div
+                ref={trackRef}
+                className="relative w-[70px] sm:w-[80px] h-[3px] bg-[#e2e8f0] rounded-full overflow-hidden"
+                aria-hidden="true"
+              >
                 <div
-                  className="absolute top-0 h-[3px] w-[26px] sm:w-[32px] bg-[#16181b] rounded-full transition-all duration-300"
-                  style={{ left: `${progressOffset}px` }}
+                  ref={thumbRef}
+                  className="absolute top-0 h-[3px] w-[26px] sm:w-[32px] bg-[#16181b] rounded-full transition-transform duration-150 ease-out will-change-transform"
+                  style={{
+                    transform: `translateX(${progressRatio * maxTravel}px)`,
+                  }}
                 />
               </div>
 
               <button
                 type="button"
-                onClick={handleNext}
-                className="w-[24px] h-[24px] flex items-center justify-center text-[#16181b] hover:opacity-60 transition-opacity cursor-pointer"
+                onClick={() => handleScrollStep("next")}
+                className="w-[24px] h-[24px] flex items-center justify-center text-[#737373] hover:text-[#16181b] transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#16181b] rounded"
                 aria-label="Next review"
               >
-                <svg className="w-[18px] h-[18px] stroke-current" fill="none" strokeWidth="2.2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m0 0l-6-6m6 6l-6 6" />
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path
+                    d="M11.25 3.75L17.5 10M17.5 10L11.25 16.25M17.5 10H2.5"
+                    strokeWidth="1.67"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    stroke="currentColor"
+                  />
                 </svg>
               </button>
             </div>
           </div>
 
-          {/* Right Cards: Horizontal scroll on mobile/tablet matching screenshot, 3-col on lg */}
+          {/* Right Cards Carousel Track */}
           <div
             ref={scrollRef}
-            className="w-full lg:w-[965.75px] flex flex-nowrap overflow-x-auto scrollbar-none gap-4 sm:gap-6 lg:grid lg:grid-cols-3 lg:gap-[28px] shrink-0 pt-1 pb-4 snap-x"
+            onScroll={handleScroll}
+            className="w-full lg:max-w-[965.75px] flex flex-nowrap overflow-x-auto scrollbar-none gap-4 sm:gap-6 lg:gap-[28px] shrink-0 pt-1 pb-4 snap-x snap-mandatory scroll-smooth"
+            role="region"
+            aria-label="Testimonials Carousel"
+            tabIndex={0}
           >
             {feedbacks.map((item) => (
-              <article key={item.id} className="w-[260px] sm:w-[285px] lg:w-auto shrink-0 flex flex-col snap-start">
+              <article
+                key={item.id}
+                className="w-[260px] sm:w-[285px] lg:w-[303.25px] shrink-0 flex flex-col snap-start"
+              >
                 {/* Speech Bubble Body */}
-                <div className="relative bg-white border border-[#edf0f5] rounded-[22px] sm:rounded-[24px] p-5 sm:p-6 lg:p-[28px] min-h-[220px] sm:min-h-[240px] lg:h-[260px] shadow-[0_10px_30px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+                <div className="relative bg-white border border-[#edf0f5] rounded-[20px] sm:rounded-[24px] p-5 sm:p-6 lg:p-[28px] min-h-[220px] sm:min-h-[240px] lg:h-[260px] shadow-[0_10px_30px_rgba(0,0,0,0.04)] flex flex-col justify-between">
                   <p className="text-[13px] sm:text-[13.5px] font-normal leading-[21px] sm:leading-[22px] text-[#4a4e53]">
                     {item.text}
                   </p>
 
-                  {/* 5 Emerald Stars */}
+                  {/* 5 Emerald Stars (#00b67a, gap:4px, 16x16) */}
                   <div className="flex items-center gap-[4px] mt-4" aria-label={`${item.stars} out of 5 stars`}>
                     {Array.from({ length: item.stars }).map((_, idx) => (
                       <svg
                         key={idx}
-                        className="w-[16px] h-[16px] fill-[#00b67a]"
-                        viewBox="0 0 20 20"
+                        className="w-[16px] h-[16px] shrink-0"
+                        viewBox="0 0 16 16"
+                        fill="none"
                         aria-hidden="true"
                       >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.376 2.453a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.376-2.453a1 1 0 00-1.175 0l-3.376 2.453c-.784.57-1.838-.196-1.539-1.118l1.287-3.966a1 1 0 00-.364-1.118L1.05 9.394c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69l1.287-3.967z" />
+                        <path
+                          d="M8.0004 12L3.298 14.472L4.1964 9.236L0.391602 5.528L5.6492 4.764L8.0004 0L10.3516 4.764L15.6092 5.528L11.8044 9.236L12.7028 14.472L8.0004 12"
+                          fill="#00B67A"
+                        />
                       </svg>
                     ))}
                   </div>
 
-                  {/* Speech Bubble Tail pointing down towards avatar */}
-                  <div
-                    className="absolute left-[34px] -bottom-[10px] w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.04)]"
+                  {/* Speech Bubble Tail with subtle border matching card border */}
+                  <svg
+                    className="absolute left-[30px] -bottom-[12px] w-[24px] h-[13px] overflow-visible pointer-events-none drop-shadow-[0_2px_2px_rgba(0,0,0,0.02)]"
+                    viewBox="0 0 24 13"
+                    fill="none"
                     aria-hidden="true"
-                  />
+                  >
+                    <path d="M0 0 L12 12 L24 0" fill="#ffffff" stroke="#edf0f5" strokeWidth="1" />
+                    <rect x="0.5" y="-1" width="23" height="2" fill="#ffffff" />
+                  </svg>
                 </div>
 
                 {/* Author Row */}
@@ -173,7 +267,7 @@ const ExploreFeedback: React.FC = () => {
                   <img
                     src={item.avatar}
                     alt={item.name}
-                    className="w-[42px] h-[42px] rounded-full object-cover shrink-0 shadow-xs"
+                    className="w-[40px] h-[40px] sm:w-[42px] sm:h-[42px] rounded-full object-cover shrink-0 shadow-xs"
                   />
                   <div>
                     <h4 className="text-[14px] font-bold leading-[16px] text-[#16181b]">
@@ -191,12 +285,19 @@ const ExploreFeedback: React.FC = () => {
           {/* Right Carousel Chevron Button (Desktop Only) */}
           <button
             type="button"
-            onClick={handleNext}
-            className="hidden xl:flex w-[31px] h-[31px] ml-[8px] items-center justify-center text-[#16181b] hover:opacity-60 transition-opacity cursor-pointer shrink-0"
+            onClick={() => handleScrollStep("next")}
+            className="hidden xl:flex w-[31px] h-[31px] ml-[8px] items-center justify-center text-[#64748b] hover:text-[#16181b] hover:opacity-75 transition-all cursor-pointer shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#16181b] rounded"
             aria-label="Next testimonials"
           >
-            <svg className="w-[24px] h-[24px] stroke-current" fill="none" strokeWidth="1.8" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            <svg width="31" height="31" viewBox="0 0 31 31" fill="none" aria-hidden="true">
+              <path
+                d="M11.5088 25.73L19.9305 17.3084C20.925 16.3138 20.925 14.6863 19.9305 13.6917L11.5088 5.27002"
+                strokeWidth="1.5"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                stroke="currentColor"
+              />
             </svg>
           </button>
         </div>

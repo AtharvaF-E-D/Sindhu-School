@@ -63,6 +63,9 @@ const ROUTE_SEGMENTS = {
   academicsFaq: new Set([
     'faq',
     'academics-faq',
+    'admissions',
+    'admission',
+    'admission-enquiry',
   ]),
   academicsRollOfHonour: new Set([
     'roll-of-honour',
@@ -96,8 +99,6 @@ const ROUTE_SEGMENTS = {
     'schools',
     'schools-directory',
     'our-schools-network',
-    'admissions',
-    'admission',
     'curicullam',
   ]),
   about: new Set([
@@ -230,7 +231,7 @@ const PAGE_TITLES = {
   'academics-curriculum': 'Our Curriculum | Academics | Sindhu Education Society',
   'academics-approach': 'Our Approach | Academics | Sindhu Education Society',
   'academics-roll-of-honour': 'Roll of Honour | Academics | Sindhu Education Society',
-  'academics-faq': 'FAQ | Academics | Sindhu Education Society',
+  'academics-faq': 'Admissions & FAQ | Sindhu Education Society',
   'students-chronicle': 'Life at SES | Students Chronicle | Sindhu Education Society',
   'creative-arts-gallery': 'Creative Arts & Gallery | Students Chronicle | Sindhu Education Society',
   sports: 'Sports | Students Chronicle | Sindhu Education Society',
