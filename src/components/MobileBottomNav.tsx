@@ -42,6 +42,7 @@ const getTabFromPageOrHash = (page?: string): string => {
 const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ currentPage, onMenuToggle }) => {
   const [hashTab, setHashTab] = useState<string>(() => getTabFromPageOrHash(currentPage));
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isTopNavbarOpen, setIsTopNavbarOpen] = useState(false);
 
   // Sync hashTab on hashchange and popstate
   useEffect(() => {
@@ -57,10 +58,27 @@ const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ currentPage, onMenuTo
     };
   }, [currentPage]);
 
+  // Listen to top navbar open/close event to hide the mobile footer bar
+  useEffect(() => {
+    const handleNavbarToggle = (e: Event) => {
+      const customEvent = e as CustomEvent<{ open: boolean }>;
+      const isOpen = !!customEvent.detail?.open;
+      setIsTopNavbarOpen(isOpen);
+      if (isOpen) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("ses:navbar-toggle", handleNavbarToggle);
+    return () => {
+      window.removeEventListener("ses:navbar-toggle", handleNavbarToggle);
+    };
+  }, []);
+
   const activeTab = currentPage ? getTabFromPageOrHash(currentPage) : hashTab;
 
   const handleNavClick = (tab: string, href: string) => {
-    setActiveTab(tab);
+    setHashTab(tab);
     setMenuOpen(false);
     if (href === "#home") {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -81,150 +99,176 @@ const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ currentPage, onMenuTo
       {/* Mobile Drawer when Menu is opened */}
       {menuOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-xs flex flex-col justify-end md:hidden animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex flex-col justify-end md:hidden animate-in fade-in duration-200"
           onClick={() => setMenuOpen(false)}
         >
           <div
-            className="w-full bg-white rounded-t-[28px] max-h-[80vh] overflow-y-auto p-6 pb-24 shadow-2xl animate-in slide-in-from-bottom duration-300"
+            className="w-full bg-white rounded-t-[32px] max-h-[85vh] overflow-y-auto p-5 pb-24 shadow-2xl animate-in slide-in-from-bottom duration-300"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#073c96]" />
-                <h3 className="text-[17px] font-bold text-[#120f38]">
-                  Navigation Menu
-                </h3>
+            {/* Header Handle & Title */}
+            <div className="flex flex-col items-center pb-3">
+              <div className="w-12 h-1.5 rounded-full bg-slate-200 mb-3" />
+              <div className="w-full flex items-center justify-between pb-3 border-b border-slate-100">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#073c96]" />
+                  <h3 className="text-[16px] font-bold text-[#073c96]">
+                    Explore Sindhu Education
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setMenuOpen(false)}
+                  className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors"
+                  aria-label="Close Menu"
+                >
+                  ✕
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setMenuOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800"
-                aria-label="Close Menu"
-              >
-                ✕
-              </button>
             </div>
 
-            {/* Quick Links Sections */}
-            <div className="grid grid-cols-2 gap-4 mt-5 text-[13px]">
-              <div className="space-y-2.5">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#94a3b8]">
-                  About
-                </p>
+            {/* Quick Links Sections Grid */}
+            <div className="grid grid-cols-2 gap-3 mt-4 text-[12.5px]">
+              {/* About Card */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
+                <div className="flex items-center gap-2 pb-1.5 border-b border-slate-200/70">
+                  <span className="w-2 h-2 rounded-full bg-[#073c96]" />
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#073c96]">
+                    About SES
+                  </p>
+                </div>
                 <a
                   href="#about-society"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   About Society
                 </a>
                 <a
                   href="#schools-curriculum"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Schools Network
                 </a>
                 <a
                   href="#core-values"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Core Values
                 </a>
                 <a
                   href="#leadership"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Leadership
                 </a>
+                <a
+                  href="#why-choose-ses"
+                  onClick={() => setMenuOpen(false)}
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
+                >
+                  Why Choose SES
+                </a>
               </div>
 
-              <div className="space-y-2.5">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#94a3b8]">
-                  Academics
-                </p>
+              {/* Academics Card */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
+                <div className="flex items-center gap-2 pb-1.5 border-b border-slate-200/70">
+                  <span className="w-2 h-2 rounded-full bg-[#073c96]" />
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#073c96]">
+                    Academics
+                  </p>
+                </div>
                 <a
                   href="#curriculum"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Curriculum
                 </a>
                 <a
                   href="#our-approach"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Our Approach
                 </a>
                 <a
                   href="#roll-of-honour"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Roll of Honour
                 </a>
                 <a
                   href="#faq"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Academics FAQ
                 </a>
               </div>
 
-              <div className="space-y-2.5 pt-2">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#94a3b8]">
-                  Campus Life
-                </p>
+              {/* Campus Life Card */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
+                <div className="flex items-center gap-2 pb-1.5 border-b border-slate-200/70">
+                  <span className="w-2 h-2 rounded-full bg-[#073c96]" />
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#073c96]">
+                    Chronicle
+                  </p>
+                </div>
                 <a
                   href="#students-chronicle"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Life at SES
                 </a>
                 <a
                   href="#creative-arts-gallery"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Creative Arts
                 </a>
                 <a
                   href="#sports"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Sports Arena
                 </a>
               </div>
 
-              <div className="space-y-2.5 pt-2">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#94a3b8]">
-                  Connect
-                </p>
+              {/* Connect Card */}
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
+                <div className="flex items-center gap-2 pb-1.5 border-b border-slate-200/70">
+                  <span className="w-2 h-2 rounded-full bg-[#073c96]" />
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#073c96]">
+                    Connect
+                  </p>
+                </div>
                 <a
                   href="#student-protected-app"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Parents Pathway
                 </a>
                 <a
                   href="#ses-alumni"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Alumni Network
                 </a>
                 <a
                   href="#notable-alumni"
                   onClick={() => setMenuOpen(false)}
-                  className="block text-slate-700 hover:text-[#073c96] font-medium py-1"
+                  className="block text-slate-700 hover:text-[#073c96] font-medium py-0.5 transition-colors"
                 >
                   Notable Alumni
                 </a>
@@ -232,13 +276,13 @@ const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ currentPage, onMenuTo
             </div>
 
             {/* Admission Button in drawer */}
-            <div className="mt-6 pt-4 border-t border-slate-100">
+            <div className="mt-5 pt-3 border-t border-slate-100">
               <a
                 href="#admissions"
                 onClick={() => setMenuOpen(false)}
-                className="w-full h-11 rounded-full bg-[#073c96] text-white flex items-center justify-center font-bold text-[14px] shadow-md"
+                className="w-full h-11 rounded-2xl bg-[#40c843] hover:bg-[#38b53b] text-white flex items-center justify-center font-bold text-[13.5px] shadow-md shadow-emerald-500/15 transition-all"
               >
-                Admissions Open AY 2027–28 →
+                <span>Admissions Open AY 2027–28 • Apply Now →</span>
               </a>
             </div>
           </div>
@@ -247,7 +291,11 @@ const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ currentPage, onMenuTo
 
       {/* FIXED BOTTOM NAVIGATION BAR */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-50 bg-[#f8faff] border-t border-slate-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] md:hidden select-none pb-[env(safe-area-inset-bottom,0px)]"
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-[#f8faff] border-t border-slate-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] md:hidden select-none pb-[env(safe-area-inset-bottom,0px)] transition-all duration-300 ease-in-out ${
+          isTopNavbarOpen
+            ? "translate-y-full opacity-0 pointer-events-none"
+            : "translate-y-0 opacity-100"
+        }`}
         aria-label="Mobile Bottom Navigation"
       >
         <div className="max-w-md mx-auto h-[64px] relative px-2 flex items-center justify-between">
