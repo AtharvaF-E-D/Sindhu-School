@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import girlCircleImg from "../../assets/home-girl-circle.jpg";
 import boyCircleImg from "../../assets/home-boy-circle.png";
 import trophyIcon from "../../assets/home-trophy.png";
@@ -15,22 +15,88 @@ import meteorDoodle from "../../assets/home-doodle-meteor.png";
 import moonDoodle from "../../assets/home-doodle-moon.png";
 
 interface MetricItem {
-  value: string;
+  numericValue: number;
+  suffix?: string;
   label: string;
   icon: string;
-  valueWidth: string;
-  labelWidth: string;
 }
 
 const metrics: MetricItem[] = [
-  { value: "75+", label: "Years", icon: trophyIcon, valueWidth: "w-[127px]", labelWidth: "w-[127px]" },
-  { value: "15000+", label: "SES Scholar's", icon: mortarboardIcon, valueWidth: "w-[227px]", labelWidth: "w-[227px]" },
-  { value: "400+", label: "Educators", icon: teacherIcon, valueWidth: "w-[227px]", labelWidth: "w-[227px]" },
-  { value: "2", label: "Boards", icon: passFailIcon, valueWidth: "w-[118px]", labelWidth: "w-[118px]" },
-  { value: "12", label: "Schools", icon: schoolIcon, valueWidth: "w-[136px]", labelWidth: "w-[136px]" },
+  { numericValue: 75, suffix: "+", label: "Years", icon: trophyIcon },
+  { numericValue: 15000, suffix: "+", label: "SES Scholar's", icon: mortarboardIcon },
+  { numericValue: 400, suffix: "+", label: "Educators", icon: teacherIcon },
+  { numericValue: 2, suffix: "", label: "Boards", icon: passFailIcon },
+  { numericValue: 12, suffix: "", label: "Schools", icon: schoolIcon },
 ];
 
+const AnimatedCounter: React.FC<{
+  value: number;
+  suffix?: string;
+  isVisible: boolean;
+  duration?: number;
+}> = ({ value, suffix = "", isVisible, duration = 1800 }) => {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTimestamp: number | null = null;
+    let animationFrame: number;
+
+    const easeOutExpo = (t: number): number => {
+      return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    };
+
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easedProgress = easeOutExpo(progress);
+
+      const current = Math.round(easedProgress * value);
+      setDisplayValue(current);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(step);
+      } else {
+        setDisplayValue(value);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(step);
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, [value, isVisible, duration]);
+
+  return (
+    <span>
+      {displayValue}
+      {suffix}
+    </span>
+  );
+};
+
 const BetterFuture: React.FC = () => {
+  const metricsRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const node = metricsRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
   return (
     <section
       id="better-future"
@@ -230,80 +296,98 @@ const BetterFuture: React.FC = () => {
           </div>
         </div>
 
-        {/* MOBILE METRICS LAYOUT (< lg): 2 items top row, 3 items bottom row */}
-        <div className="mt-8 flex lg:hidden flex-col items-center gap-5 w-full max-w-[390px] mx-auto px-2">
-          {/* Top Row: 2 items (75+ Years, 15000+ SES Scholar's) */}
-          <div className="flex items-center justify-center gap-8 sm:gap-12 w-full">
-            {metrics.slice(0, 2).map((metric) => (
-              <div key={metric.label} className="inline-flex items-center gap-3">
-                <div className="w-[44px] h-[44px] sm:w-[52px] sm:h-[52px] rounded-full bg-[#e0f2fe] shadow-[0_4px_12px_rgba(7,60,150,0.08)] flex items-center justify-center shrink-0">
-                  <img
-                    src={metric.icon}
-                    alt=""
-                    aria-hidden="true"
-                    className="w-[24px] h-[24px] sm:w-[28px] sm:h-[28px] object-contain"
-                  />
+        {/* METRICS SECTION WRAPPER */}
+        <div ref={metricsRef} className="w-full">
+          {/* MOBILE METRICS LAYOUT (< lg): 2 items top row, 3 items bottom row */}
+          <div className="mt-8 flex lg:hidden flex-col items-center gap-6 w-full max-w-[420px] mx-auto px-4">
+            {/* Top Row: 2 items (75+ Years, 15000+ SES Scholar's) */}
+            <div className="flex items-center justify-around w-full gap-4">
+              {metrics.slice(0, 2).map((metric) => (
+                <div key={metric.label} className="inline-flex items-center gap-3">
+                  <div className="w-[46px] h-[46px] rounded-full bg-[#e0f2fe] shadow-[0_4px_12px_rgba(7,60,150,0.08)] flex items-center justify-center shrink-0">
+                    <img
+                      src={metric.icon}
+                      alt=""
+                      aria-hidden="true"
+                      className="w-[24px] h-[24px] object-contain"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[22px] sm:text-[26px] font-extrabold leading-none text-[#073c96]">
+                      <AnimatedCounter
+                        value={metric.numericValue}
+                        suffix={metric.suffix}
+                        isVisible={isVisible}
+                      />
+                    </span>
+                    <span className="text-[11px] sm:text-[13px] font-medium leading-tight text-[#64748b] mt-1 whitespace-nowrap">
+                      {metric.label}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-[20px] sm:text-[24px] font-extrabold leading-none text-[#073c96]">
-                    {metric.value}
-                  </span>
-                  <span className="text-[11px] sm:text-[13px] font-medium leading-tight text-[#64748b] mt-1 whitespace-nowrap">
-                    {metric.label}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom Row: 3 items (400+ Educators, 2 Boards, 12 Schools) */}
-          <div className="flex items-center justify-between sm:justify-center sm:gap-10 w-full px-1">
-            {metrics.slice(2, 5).map((metric) => (
-              <div key={metric.label} className="inline-flex items-center gap-2">
-                <div className="w-[38px] h-[38px] sm:w-[48px] sm:h-[48px] rounded-full bg-[#e0f2fe] shadow-[0_4px_12px_rgba(7,60,150,0.08)] flex items-center justify-center shrink-0">
-                  <img
-                    src={metric.icon}
-                    alt=""
-                    aria-hidden="true"
-                    className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[17px] sm:text-[22px] font-extrabold leading-none text-[#073c96]">
-                    {metric.value}
-                  </span>
-                  <span className="text-[10px] sm:text-[12px] font-medium leading-tight text-[#64748b] mt-0.5 whitespace-nowrap">
-                    {metric.label}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* DESKTOP METRICS ROW (>= lg) */}
-        <div className="hidden lg:flex mt-[16px] max-w-[1328px] mx-auto h-[119px] items-center justify-center gap-x-[23px]">
-          {metrics.map((metric) => (
-            <div key={metric.label} className="inline-flex items-start gap-[16px]">
-              <div className="mt-[2px] w-[64px] h-[65px] rounded-full bg-[#e0f2fe] shadow-[0_8px_20px_rgba(7,60,150,0.08)] flex items-center justify-center shrink-0">
-                <img
-                  src={metric.icon}
-                  alt=""
-                  aria-hidden="true"
-                  className="w-[32px] h-[33px] object-contain"
-                />
-              </div>
-
-              <div className="flex flex-col gap-[5px]">
-                <span className="text-[48px] font-bold leading-[67px] tracking-[-0.75px] text-[#073c96]">
-                  {metric.value}
-                </span>
-                <span className="text-[20px] font-medium leading-[19px] text-[#64748b] whitespace-nowrap">
-                  {metric.label}
-                </span>
-              </div>
+              ))}
             </div>
-          ))}
+
+            {/* Bottom Row: 3 items (400+ Educators, 2 Boards, 12 Schools) */}
+            <div className="flex items-center justify-between sm:justify-around w-full gap-2 px-1">
+              {metrics.slice(2, 5).map((metric) => (
+                <div key={metric.label} className="inline-flex items-center gap-2">
+                  <div className="w-[38px] h-[38px] sm:w-[44px] sm:h-[44px] rounded-full bg-[#e0f2fe] shadow-[0_4px_12px_rgba(7,60,150,0.08)] flex items-center justify-center shrink-0">
+                    <img
+                      src={metric.icon}
+                      alt=""
+                      aria-hidden="true"
+                      className="w-[20px] h-[20px] sm:w-[22px] sm:h-[22px] object-contain"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[18px] sm:text-[22px] font-extrabold leading-none text-[#073c96]">
+                      <AnimatedCounter
+                        value={metric.numericValue}
+                        suffix={metric.suffix}
+                        isVisible={isVisible}
+                      />
+                    </span>
+                    <span className="text-[10px] sm:text-[12px] font-medium leading-tight text-[#64748b] mt-0.5 whitespace-nowrap">
+                      {metric.label}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* DESKTOP METRICS ROW (>= lg): Generously spaced with animated counters */}
+          <div className="hidden lg:flex mt-8 lg:mt-10 max-w-[1240px] xl:max-w-[1280px] mx-auto items-center justify-between gap-6 xl:gap-8 px-4 sm:px-6">
+            {metrics.map((metric) => (
+              <div
+                key={metric.label}
+                className="inline-flex items-center gap-3.5 xl:gap-4 transition-transform duration-300 hover:scale-105 cursor-default"
+              >
+                <div className="w-[56px] h-[56px] xl:w-[62px] xl:h-[62px] rounded-full bg-[#e0f2fe] shadow-[0_8px_20px_rgba(7,60,150,0.08)] flex items-center justify-center shrink-0">
+                  <img
+                    src={metric.icon}
+                    alt=""
+                    aria-hidden="true"
+                    className="w-[28px] h-[28px] xl:w-[32px] xl:h-[32px] object-contain"
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <span className="text-[38px] xl:text-[44px] font-black leading-none tracking-tight text-[#073c96]">
+                    <AnimatedCounter
+                      value={metric.numericValue}
+                      suffix={metric.suffix}
+                      isVisible={isVisible}
+                    />
+                  </span>
+                  <span className="text-[15px] xl:text-[17px] font-medium leading-normal text-[#64748b] whitespace-nowrap mt-1.5">
+                    {metric.label}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

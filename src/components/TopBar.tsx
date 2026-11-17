@@ -7,9 +7,9 @@ interface TopBarProps {
 }
 
 const TopBar: React.FC<TopBarProps> = ({
-  location = "884 Kampala, Uganda eLearning Platform",
-  email = "support@histudy.com",
-  phone = "+12 (123) 456 78900",
+  location = "Kalani Chowk, Jaripatka, Nagpur, Maharashtra - 440014",
+  email = "info@sindhueducation.org",
+  phone = "+91 712 2640243",
 }) => {
   return (
     <header className="hidden md:block w-full bg-[#073c96] text-white text-xs sm:text-[13px] font-normal leading-normal select-none">

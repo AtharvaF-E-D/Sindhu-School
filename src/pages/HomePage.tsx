@@ -15,8 +15,10 @@ function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <TopBar />
-      <NavBar />
-      <HeroSection />
+      <div className="relative">
+        <NavBar overlay />
+        <HeroSection />
+      </div>
       <InfoBar />
       <AboutSociety />
       <OurCampuses />

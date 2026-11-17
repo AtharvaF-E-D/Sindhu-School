@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import logo from '../assets/logo.png';
 
 interface NavItem {
@@ -246,71 +247,27 @@ const isDropdownItemActive = (href: string, activeHash: string) => {
   return activeHash === href;
 };
 
-interface CategoryMeta {
-  desc: string;
-  icon: React.ReactNode;
+interface NavBarProps {
+  overlay?: boolean;
 }
 
-const CATEGORY_META: Record<string, CategoryMeta> = {
-  About: {
-    desc: 'Legacy, leadership, core values & schools',
-    icon: (
-      <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-      </svg>
-    ),
-  },
-  Academics: {
-    desc: 'Curriculum, methodology, honours & FAQ',
-    icon: (
-      <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 14v7" />
-      </svg>
-    ),
-  },
-  Admissions: {
-    desc: 'Admissions open for AY 2027–28',
-    icon: (
-      <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-      </svg>
-    ),
-  },
-  'Students Chronicle': {
-    desc: 'Campus life, creative arts gallery & sports',
-    icon: (
-      <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-      </svg>
-    ),
-  },
-  'Parents Pathway': {
-    desc: 'Kids Protect app & attendance monitoring',
-    icon: (
-      <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    ),
-  },
-  'Alumni Connect': {
-    desc: 'Distinguished alumni & notable stories',
-    icon: (
-      <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-      </svg>
-    ),
-  },
-};
-
-const NavBar: React.FC = () => {
+const NavBar: React.FC<NavBarProps> = ({ overlay = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [expandedMobileGroup, setExpandedMobileGroup] = useState<string | null>(null);
   const [activeHash, setActiveHash] = useState(() =>
     window.location.hash.toLowerCase()
   );
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 30);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const syncHash = () => setActiveHash(window.location.hash.toLowerCase());
@@ -322,51 +279,75 @@ const NavBar: React.FC = () => {
     };
   }, []);
 
-  // When mobile drawer opens, lock body scroll, auto-expand active group, and notify mobile bottom bar to hide
+  // Auto-close mobile menu on desktop screen resize and reset body scroll
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMobileMenuOpen(false);
+        document.body.style.overflow = '';
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Lock body scroll on mobile only while full-screen menu is open
+  useEffect(() => {
+    if (mobileMenuOpen && window.innerWidth < 1024) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.classList.add('mobile-navbar-open');
-      window.dispatchEvent(
-        new CustomEvent('ses:navbar-toggle', { detail: { open: true } })
-      );
       const activeGroupItem = navItems.find(
         (item) => item.hasDropdown && isDropdownGroupActive(item.label, activeHash)
       );
       if (activeGroupItem) {
         setExpandedMobileGroup(activeGroupItem.label);
       }
-    } else {
-      document.body.style.overflow = '';
-      document.body.classList.remove('mobile-navbar-open');
-      window.dispatchEvent(
-        new CustomEvent('ses:navbar-toggle', { detail: { open: false } })
-      );
     }
-    return () => {
-      document.body.style.overflow = '';
-      document.body.classList.remove('mobile-navbar-open');
-      window.dispatchEvent(
-        new CustomEvent('ses:navbar-toggle', { detail: { open: false } })
-      );
-    };
   }, [mobileMenuOpen, activeHash]);
 
-  return (
-    <nav className="w-full bg-white border-b border-slate-100 sticky top-0 z-50 shadow-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-18 sm:h-20">
-          {/* Logo on Left */}
-          <a href="#home" className="flex items-center gap-3 shrink-0 py-1" aria-label="Go to Homepage">
-            <img
-              src={logo}
-              alt="Sindhu Education Society Logo"
-              className="h-12 sm:h-14 w-auto object-contain"
-            />
-          </a>
+  const isTransparent = overlay && !isScrolled;
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center gap-7 xl:gap-8 text-[14px] font-medium text-slate-700">
+  return (
+    <nav
+      className={`w-full overflow-visible transition-all duration-300 z-40 ${
+        overlay
+          ? isTransparent && !mobileMenuOpen
+            ? "absolute top-0 left-0 bg-gradient-to-b from-black/70 via-black/30 to-transparent border-transparent"
+            : "sticky top-0 bg-white/98 backdrop-blur-md border-b border-slate-100 shadow-sm"
+          : "sticky top-0 bg-white border-b border-slate-100 shadow-xs"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="flex items-center justify-between h-16 sm:h-18">
+          {/* 1. Left: Overhanging Logo Badge (Anchored flush to top across all pages) */}
+          <div className="self-start relative shrink-0">
+            <a
+              href="#home"
+              className="absolute top-0 left-0 bg-white shadow-xl shadow-black/20 rounded-t-none rounded-b-2xl border-x border-b border-slate-200/80 px-3 sm:px-4.5 pt-2 sm:pt-2.5 pb-3 sm:pb-4.5 z-50 flex flex-col items-center justify-center transition-all duration-200 hover:shadow-2xl hover:translate-y-0.5 group cursor-pointer"
+              aria-label="Sindhu Education Society Homepage"
+            >
+              <img
+                src={logo}
+                alt="Sindhu Education Society Logo"
+                className="h-14 sm:h-18 lg:h-22 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+              />
+            </a>
+
+            {/* Spacer placeholder to reserve width so links never collide with the hanging badge */}
+            <div className="w-[84px] sm:w-[110px] lg:w-[130px] h-1" aria-hidden="true" />
+          </div>
+
+          {/* 2. Center: Navigation Links */}
+          <div className="hidden lg:flex items-center justify-center gap-5 xl:gap-7 text-[14px] font-medium flex-1 px-3">
             {navItems.map((item) => {
               const isGroupActive = isDropdownGroupActive(item.label, activeHash);
               if (!item.hasDropdown) {
@@ -374,8 +355,14 @@ const NavBar: React.FC = () => {
                   <a
                     key={item.label}
                     href={item.href}
-                    className={`hover:text-[#073c96] transition-colors py-2 ${
-                      isGroupActive ? 'text-[#073c96] font-semibold' : ''
+                    className={`transition-colors py-2 whitespace-nowrap ${
+                      isTransparent
+                        ? isGroupActive
+                          ? "text-white font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] underline underline-offset-8 decoration-2 decoration-[#60a5fa]"
+                          : "text-white/95 hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]"
+                        : isGroupActive
+                        ? "text-[#073c96] font-semibold"
+                        : "text-slate-700 hover:text-[#073c96]"
                     }`}
                   >
                     {item.label}
@@ -394,8 +381,14 @@ const NavBar: React.FC = () => {
                 >
                   <button
                     type="button"
-                    className={`flex items-center gap-1.5 hover:text-[#073c96] py-2 transition-colors cursor-pointer ${
-                      isGroupActive ? 'text-[#073c96] font-semibold' : ''
+                    className={`flex items-center gap-1.5 py-2 transition-colors cursor-pointer whitespace-nowrap ${
+                      isTransparent
+                        ? isGroupActive
+                          ? "text-white font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] underline underline-offset-8 decoration-2 decoration-[#60a5fa]"
+                          : "text-white/95 hover:text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]"
+                        : isGroupActive
+                        ? "text-[#073c96] font-semibold"
+                        : "text-slate-700 hover:text-[#073c96]"
                     }`}
                     onClick={() => setOpenDropdown(isOpen ? null : item.label)}
                     aria-expanded={isOpen}
@@ -405,10 +398,12 @@ const NavBar: React.FC = () => {
                     <svg
                       className={`w-3.5 h-3.5 transition-transform duration-200 ${
                         isOpen
-                          ? 'rotate-180 text-[#073c96]'
+                          ? "rotate-180 " + (isTransparent ? "text-white" : "text-[#073c96]")
+                          : isTransparent
+                          ? "text-white/80"
                           : isGroupActive
-                          ? 'text-[#073c96]'
-                          : 'text-slate-400'
+                          ? "text-[#073c96]"
+                          : "text-slate-400"
                       }`}
                       fill="none"
                       stroke="currentColor"
@@ -423,12 +418,12 @@ const NavBar: React.FC = () => {
                     </svg>
                   </button>
 
-                  {/* Dropdown Menu */}
+                  {/* Dropdown Menu (Always White Card with Dark Text) */}
                   {isOpen && (
                     <div
                       role="menu"
                       aria-label={`${item.label} menu`}
-                      className="absolute left-0 top-full w-60 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150"
+                      className="absolute left-0 top-full w-60 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 text-slate-700 animate-in fade-in slide-in-from-top-1 duration-150"
                     >
                       {item.dropdownItems?.map((drop) => {
                         const active = isDropdownItemActive(drop.href, activeHash);
@@ -455,328 +450,213 @@ const NavBar: React.FC = () => {
             })}
           </div>
 
-          {/* Right Action: Announcement Button (Desktop & Tablet) */}
-          <div className="hidden sm:flex items-center">
-            <a
-              href="#announcements"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#073c96] hover:bg-[#06307a] text-white text-xs sm:text-sm font-semibold shadow-sm transition-all hover:shadow-md"
-            >
-              <span>Announcement</span>
-              {/* Megaphone Icon */}
-              <svg
-                className="w-4 h-4 shrink-0 text-white"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.9"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
+          {/* 3. Right: Mobile Actions (Call Button + Menu Toggle, Hidden on Desktop) & Desktop Balancing Spacer */}
+          <div className="flex items-center shrink-0">
+            {/* Mobile Actions: Phone Icon Button + Menu Toggle Button */}
+            <div className="lg:hidden flex items-center gap-2 sm:gap-2.5">
+              {/* Direct Phone Call Button */}
+              <a
+                href="tel:+917122640243"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#073c96] hover:bg-[#06307a] text-white flex items-center justify-center shadow-sm active:scale-95 transition-all"
+                aria-label="Call SES Helpline"
+                title="Call Helpline"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"
-                />
-              </svg>
-            </a>
-          </div>
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.053 15.053 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1.01A11.36 11.36 0 018.57 3.9c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.52c0-.55-.45-1-.99-1z" />
+                </svg>
+              </a>
 
-          {/* Mobile Hamburger Toggle Button */}
-          <div className="flex lg:hidden items-center">
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(true)}
-              className="p-2 -mr-1 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer"
-              aria-label="Open navigation menu"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
+              {/* Menu Toggle Button (Hamburger / Close 'X') */}
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full transition-colors cursor-pointer flex items-center justify-center border ${
+                  isTransparent && !mobileMenuOpen
+                    ? "text-white hover:bg-white/20 border-white/30 backdrop-blur-xs drop-shadow-sm"
+                    : "text-slate-800 hover:text-[#073c96] bg-slate-100 hover:bg-slate-200 border-slate-200/80"
+                }`}
+                aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                title="Menu"
+              >
+                {mobileMenuOpen ? (
+                  <svg className="w-5 h-5 text-slate-800" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5 text-slate-800" fill="none" stroke="currentColor" strokeWidth="2.3" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
+            </div>
+
+            {/* Desktop Balancing Spacer (Preserves center alignment on desktop) */}
+            <div className="hidden lg:block w-[84px] sm:w-[110px] lg:w-[130px] h-1" aria-hidden="true" />
           </div>
         </div>
       </div>
 
-      {/* Off-canvas Mobile Drawer Backdrop */}
-      <div
-        className={`fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-300 lg:hidden ${
-          mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={() => setMobileMenuOpen(false)}
-        aria-hidden="true"
-      />
-
-      {/* Off-canvas Mobile Navigation Drawer (Slides in from the right) */}
-      <div
-        className={`fixed top-0 right-0 bottom-0 z-50 w-[88vw] max-w-[360px] bg-white shadow-2xl flex flex-col lg:hidden transition-transform duration-300 ease-out ${
-          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        {/* Drawer Header */}
-        <div className="flex items-center justify-between px-5 h-20 border-b border-slate-100 shrink-0 bg-white">
-          <a
-            href="#home"
-            onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-3"
-            aria-label="Sindhu Education Society"
-          >
-            <img
-              src={logo}
-              alt="Sindhu Education Society Logo"
-              className="h-11 w-auto object-contain"
-            />
-            <div className="flex flex-col">
-              <span className="text-[13px] font-bold text-[#073c96] leading-tight">
-                Sindhu Education
-              </span>
-              <span className="text-[10px] text-slate-400 font-medium tracking-wide uppercase">
-                Society • Nagpur
-              </span>
-            </div>
-          </a>
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(false)}
-            className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
-            aria-label="Close navigation menu"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Scrollable Navigation List */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-2.5 bg-slate-50/40">
-          {/* Announcement Card */}
-          <a
-            href="#announcements"
-            onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center justify-between p-3.5 rounded-2xl bg-[#073c96] text-white shadow-sm hover:bg-[#06307a] transition-all group"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center text-white shrink-0 group-hover:scale-105 transition-transform">
-                <svg className="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                </svg>
-              </div>
-              <div>
-                <span className="text-[13px] font-bold block leading-tight">School Announcements</span>
-                <span className="text-[10.5px] text-blue-100 font-normal">View latest circulars & dates</span>
-              </div>
-            </div>
-            <svg className="w-4 h-4 text-white/80 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-
-          {/* Navigation Items */}
-          {navItems.map((item) => {
-            const isGroupActive = isDropdownGroupActive(item.label, activeHash);
-            const isExpanded = expandedMobileGroup === item.label;
-            const meta = CATEGORY_META[item.label];
-
-            if (!item.hasDropdown) {
-              return (
-                <div
-                  key={item.label}
-                  className={`rounded-2xl transition-all duration-200 border ${
-                    isGroupActive
-                      ? 'bg-blue-50/70 border-[#073c96]/30 shadow-xs'
-                      : 'bg-white border-slate-200/70 hover:border-slate-300'
-                  }`}
+      {/* Full-Screen Mobile Menu Portal (Directly rendered into document.body to ensure 100% viewport coverage) */}
+      {mobileMenuOpen &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div className="lg:hidden fixed inset-0 z-[99999] bg-white flex flex-col justify-between overflow-y-auto animate-in fade-in duration-150">
+            {/* Top Bar inside Fullscreen Portal */}
+            <div className="sticky top-0 z-10 bg-white border-b border-slate-100 px-4 sm:px-6 h-16 sm:h-18 flex items-center justify-between shrink-0 shadow-xs">
+              {/* Left: Overhanging Logo Badge */}
+              <div className="self-start relative shrink-0">
+                <a
+                  href="#home"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="absolute top-0 left-0 bg-white shadow-xl shadow-black/20 rounded-t-none rounded-b-2xl border-x border-b border-slate-200/80 px-3 sm:px-4.5 pt-2 sm:pt-2.5 pb-3 sm:pb-4.5 z-50 flex flex-col items-center justify-center cursor-pointer"
+                  aria-label="Sindhu Education Society Homepage"
                 >
-                  <a
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between p-3.5"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                          isGroupActive
-                            ? 'bg-[#073c96] text-white'
-                            : 'bg-slate-100 text-[#073c96]'
-                        }`}
-                      >
-                        {meta?.icon}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span
-                            className={`text-[14px] font-bold ${
-                              isGroupActive ? 'text-[#073c96]' : 'text-slate-800'
-                            }`}
-                          >
-                            {item.label}
-                          </span>
-                          {item.label === 'Admissions' && (
-                            <span className="px-2 py-0.5 rounded-full text-[9.5px] font-bold bg-[#40c843]/15 text-[#2ca52f] uppercase tracking-wide">
-                              Open
-                            </span>
-                          )}
-                        </div>
-                        {meta?.desc && (
-                          <p className="text-[11px] text-slate-400 font-normal mt-0.5">
-                            {meta.desc}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <svg
-                      className="w-4 h-4 text-slate-400"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </a>
-                </div>
-              );
-            }
+                  <img
+                    src={logo}
+                    alt="Sindhu Education Society Logo"
+                    className="h-14 sm:h-18 w-auto object-contain"
+                  />
+                </a>
+                <div className="w-[84px] sm:w-[110px] h-1" aria-hidden="true" />
+              </div>
 
-            return (
-              <div
-                key={item.label}
-                className={`rounded-2xl transition-all duration-200 border overflow-hidden ${
-                  isGroupActive
-                    ? 'bg-blue-50/40 border-[#073c96]/30 shadow-xs'
-                    : isExpanded
-                    ? 'bg-white border-blue-200 shadow-xs'
-                    : 'bg-white border-slate-200/70 hover:border-slate-300'
-                }`}
-              >
-                {/* Accordion Group Header */}
+              {/* Right: Phone Call Button + Close 'X' Button */}
+              <div className="flex items-center gap-2 sm:gap-2.5">
+                <a
+                  href="tel:+917122640243"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#073c96] hover:bg-[#052e75] text-white flex items-center justify-center shadow-sm active:scale-95 transition-all"
+                  aria-label="Call SES Helpline"
+                  title="Call Helpline"
+                >
+                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.053 15.053 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1.01A11.36 11.36 0 018.57 3.9c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.52c0-.55-.45-1-.99-1z" />
+                  </svg>
+                </a>
                 <button
                   type="button"
-                  onClick={() =>
-                    setExpandedMobileGroup(isExpanded ? null : item.label)
-                  }
-                  className="w-full flex items-center justify-between p-3.5 text-left cursor-pointer"
-                  aria-expanded={isExpanded}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center justify-center transition-colors cursor-pointer border border-slate-200/80"
+                  aria-label="Close navigation menu"
+                  title="Close Menu"
                 >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                        isGroupActive
-                          ? 'bg-[#073c96] text-white'
-                          : isExpanded
-                          ? 'bg-blue-50 text-[#073c96]'
-                          : 'bg-slate-100 text-[#073c96]'
-                      }`}
-                    >
-                      {meta?.icon}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`text-[14px] font-bold ${
-                            isGroupActive || isExpanded ? 'text-[#073c96]' : 'text-slate-800'
-                          }`}
-                        >
-                          {item.label}
-                        </span>
-                        {isGroupActive && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#073c96]" />
-                        )}
-                      </div>
-                      {meta?.desc && (
-                        <p className="text-[11px] text-slate-400 font-normal mt-0.5">
-                          {meta.desc}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="pl-2">
-                    <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${
-                        isExpanded ? 'bg-blue-100 rotate-180' : 'bg-slate-100'
-                      }`}
-                    >
-                      <svg
-                        className={`w-3.5 h-3.5 transition-colors ${
-                          isExpanded ? 'text-[#073c96]' : 'text-slate-400'
-                        }`}
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.4"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </div>
+                  <svg className="w-5 h-5 text-slate-800" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
-
-                {/* Submenu Accordion Items */}
-                {isExpanded && (
-                  <div className="px-3 pb-3 pt-1 border-t border-slate-100 animate-in fade-in slide-in-from-top-1 duration-200">
-                    <div className="grid grid-cols-1 gap-1 pl-11">
-                      {item.dropdownItems?.map((drop) => {
-                        const active = isDropdownItemActive(drop.href, activeHash);
-                        return (
-                          <a
-                            key={drop.label}
-                            href={drop.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className={`flex items-center justify-between py-2 px-3 rounded-xl text-[12.5px] transition-colors ${
-                              active
-                                ? 'text-[#073c96] font-bold bg-[#073c96]/10'
-                                : 'text-slate-600 hover:text-[#073c96] hover:bg-slate-50 font-medium'
-                            }`}
-                          >
-                            <span>{drop.label}</span>
-                            <svg
-                              className={`w-3.5 h-3.5 ${
-                                active ? 'text-[#073c96]' : 'text-slate-300'
-                              }`}
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.2"
-                              viewBox="0 0 24 24"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
-                          </a>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
               </div>
-            );
-          })}
-        </div>
+            </div>
 
-        {/* Drawer Action Footer */}
-        <div className="p-4 border-t border-slate-100 bg-white shrink-0 space-y-2.5">
-          <a
-            href="#admissions"
-            onClick={() => setMobileMenuOpen(false)}
-            className="w-full flex items-center justify-center gap-2 h-12 rounded-xl bg-[#40c843] hover:bg-[#38b53b] text-white text-[13.5px] font-bold shadow-md shadow-[#40c843]/20 active:scale-[0.98] transition-all"
-          >
-            <span>Apply for Admission AY 2027–28</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
+            {/* Menu Navigation List */}
+            <div className="flex-1 divide-y divide-slate-100 bg-white">
+              {navItems.map((item) => {
+                const isGroupActive = isDropdownGroupActive(item.label, activeHash);
+                const isExpanded = expandedMobileGroup === item.label;
 
-          <div className="pt-1 flex items-center justify-center gap-4 text-[11px] text-slate-500 font-medium">
-            <a href="tel:+917122520000" className="flex items-center gap-1 hover:text-[#073c96]">
-              <svg className="w-3.5 h-3.5 text-[#073c96]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              <span>Helpline: +91 712 252 0000</span>
-            </a>
-            <span className="text-slate-300">•</span>
-            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#073c96]">
-              FAQ
-            </a>
-          </div>
-        </div>
-      </div>
+                if (!item.hasDropdown) {
+                  return (
+                    <div key={item.label} className="bg-white">
+                      <a
+                        href={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`block py-4 px-5 sm:px-6 text-[16px] sm:text-[17px] font-bold tracking-tight transition-colors hover:bg-slate-50 ${
+                          isGroupActive ? 'text-[#ea580c]' : 'text-slate-900'
+                        }`}
+                      >
+                        {item.label}
+                      </a>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div key={item.label} className="bg-white">
+                    <button
+                      type="button"
+                      onClick={() => setExpandedMobileGroup(isExpanded ? null : item.label)}
+                      className="w-full flex items-center justify-between py-4 px-5 sm:px-6 text-left transition-colors hover:bg-slate-50 cursor-pointer"
+                      aria-expanded={isExpanded}
+                    >
+                      <span
+                        className={`text-[16px] sm:text-[17px] font-bold tracking-tight ${
+                          isGroupActive ? 'text-[#ea580c]' : 'text-slate-900'
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                      <span
+                        className="text-[#ea580c] text-[22px] font-black w-6 h-6 flex items-center justify-center shrink-0 transition-transform select-none"
+                        aria-hidden="true"
+                      >
+                        {isExpanded ? "−" : "+"}
+                      </span>
+                    </button>
+
+                    {isExpanded && (
+                      <div className="bg-slate-50/70 border-t border-slate-100 py-2 px-5 sm:px-6 space-y-1">
+                        {item.dropdownItems?.map((drop) => {
+                          const active = isDropdownItemActive(drop.href, activeHash);
+                          return (
+                            <a
+                              key={drop.label}
+                              href={drop.href}
+                              onClick={() => setMobileMenuOpen(false)}
+                              className={`block py-2.5 px-3 rounded-lg text-[14px] sm:text-[15px] font-medium transition-colors ${
+                                active
+                                  ? 'text-[#073c96] font-bold bg-blue-50/80'
+                                  : 'text-slate-600 hover:text-[#073c96] hover:bg-white'
+                              }`}
+                            >
+                              {drop.label}
+                            </a>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* Direct Contact item */}
+              <div className="bg-white">
+                <a
+                  href="#contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-4 px-5 sm:px-6 text-[16px] sm:text-[17px] font-bold text-slate-900 tracking-tight transition-colors hover:bg-slate-50"
+                >
+                  Contact Us
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Action Footer at bottom of full-screen menu */}
+            <div className="p-5 sm:p-6 bg-slate-50/80 border-t border-slate-100 space-y-3 mt-auto shrink-0 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+              <a
+                href="#admissions"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 h-12 rounded-xl bg-[#40c843] hover:bg-[#38b53b] text-white text-[14px] font-bold shadow-md shadow-[#40c843]/20 active:scale-[0.99] transition-all"
+              >
+                <span>Apply for Admission AY 2027–28 →</span>
+              </a>
+              <div className="flex items-center justify-between text-[12px] text-slate-500 font-medium px-1">
+                <a href="tel:+917122640243" className="flex items-center gap-1.5 hover:text-[#073c96]">
+                  <svg className="w-3.5 h-3.5 text-[#073c96]" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.053 15.053 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1.01A11.36 11.36 0 018.57 3.9c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.52c0-.55-.45-1-.99-1z" />
+                  </svg>
+                  <span>+91 712 2640243</span>
+                </a>
+                <span className="text-slate-300">•</span>
+                <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#073c96]">
+                  FAQ
+                </a>
+                <span className="text-slate-300">•</span>
+                <a href="mailto:info@sindhueducation.org" className="hover:text-[#073c96]">
+                  Email Us
+                </a>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </nav>
   );
 };

@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import khubchandLarge from "../../assets/home-khubchand.png";
-import khubchandThumb from "../../assets/campus-khubchand-thumb.png";
-import gajananImg from "../../assets/campus-gajanan.png";
-import pharmacyImg from "../../assets/campus-pharmacy.png";
+import khubchandImg from "../../assets/campus-khubchand.jpg";
+import gajananImg from "../../assets/campus-gajanan.jpg";
+import pharmacyImg from "../../assets/campus-pharmacy.jpg";
 
 interface Campus {
   id: number;
@@ -10,15 +9,17 @@ interface Campus {
   thumb: string;
   large: string;
   href: string;
+  objectPosition?: string;
 }
 
 const campuses: Campus[] = [
   {
     id: 0,
     name: "Khubchand Bajaj Central Public School",
-    thumb: khubchandThumb,
-    large: khubchandLarge,
+    thumb: khubchandImg,
+    large: khubchandImg,
     href: "#schools-curriculum",
+    objectPosition: "center 50%",
   },
   {
     id: 1,
@@ -26,6 +27,7 @@ const campuses: Campus[] = [
     thumb: gajananImg,
     large: gajananImg,
     href: "#schools-curriculum",
+    objectPosition: "center 22%",
   },
   {
     id: 2,
@@ -33,6 +35,7 @@ const campuses: Campus[] = [
     thumb: pharmacyImg,
     large: pharmacyImg,
     href: "#schools-curriculum",
+    objectPosition: "center 40%",
   },
 ];
 
@@ -197,6 +200,7 @@ const OurCampuses: React.FC = () => {
                       src={campus.thumb}
                       alt={campus.name}
                       className="w-full h-full object-cover"
+                      style={{ objectPosition: campus.objectPosition || "center" }}
                     />
                   </div>
                   <span
@@ -235,6 +239,7 @@ const OurCampuses: React.FC = () => {
             src={current.large}
             alt={current.name}
             className={`w-full h-full object-cover ${slideInClass}`}
+            style={{ objectPosition: current.objectPosition || "center" }}
           />
 
           {/* Gradient overlay */}
