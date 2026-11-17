@@ -1,109 +1,232 @@
-import React from "react";
-import heroStudents from "../../assets/hero-students.png";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import heroBanner1 from "../../assets/hero-banner-1.jpg";
+import heroBanner2 from "../../assets/hero-banner-2.jpg";
+import heroBanner3 from "../../assets/hero-banner-3.jpg";
 
-interface HeroSectionProps {
-  badgeText?: string;
-  titleLine1?: string;
-  titleLine2?: string;
-  highlightYear?: string;
-  subtitle?: string;
-  ctaText?: string;
-  ctaHref?: string;
+interface Slide {
+  id: number;
+  image: string;
+  alt: string;
+  ctaHref: string;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({
-  badgeText = "Education Society",
-  titleLine1 = "Where learning",
-  titleLine2 = "meets legacy!",
-  highlightYear = "Since 1952",
-  subtitle = "Sindhu Education Society’s glorious journey from humble beginnings to a premier educational institution in North Nagpur.",
-  ctaText = "Admissions Open for AY 2027–28",
-  ctaHref = "#admissions",
-}) => {
+const slides: Slide[] = [
+  {
+    id: 0,
+    image: heroBanner1,
+    alt: "Inspiring Young Minds – Shaping a Better Tomorrow",
+    ctaHref: "#admissions",
+  },
+  {
+    id: 1,
+    image: heroBanner2,
+    alt: "Empowering Young Minds – For a Brighter Future",
+    ctaHref: "#admissions",
+  },
+  {
+    id: 2,
+    image: heroBanner3,
+    alt: "Nurturing Young Minds – Building a Brighter Tomorrow",
+    ctaHref: "#admissions",
+  },
+];
+
+const AUTOPLAY_MS = 4000;
+
+const HeroSection: React.FC = () => {
+  const [current, setCurrent] = useState(0);
+  const [prev, setPrev] = useState<number | null>(null);
+  const [animating, setAnimating] = useState(false);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const pausedRef = useRef(false);
+  const total = slides.length;
+
+  const goTo = useCallback(
+    (idx: number, dir: "next" | "prev") => {
+      if (animating || idx === current) return;
+      setDirection(dir);
+      setAnimating(true);
+      setPrev(current);
+      setCurrent(idx);
+      setTimeout(() => {
+        setPrev(null);
+        setAnimating(false);
+      }, 600);
+    },
+    [animating, current],
+  );
+
+  const startInterval = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      if (!pausedRef.current) {
+        setCurrent((c) => {
+          const next = (c + 1) % total;
+          setDirection("next");
+          setAnimating(true);
+          setPrev(c);
+          setTimeout(() => {
+            setPrev(null);
+            setAnimating(false);
+          }, 600);
+          return next;
+        });
+      }
+    }, AUTOPLAY_MS);
+  }, [total]);
+
+  useEffect(() => {
+    startInterval();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [startInterval]);
+
+  const manualGo = (idx: number, dir: "next" | "prev") => {
+    pausedRef.current = true;
+    goTo(idx, dir);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setTimeout(() => {
+      pausedRef.current = false;
+      startInterval();
+    }, 7000);
+  };
+
+  const handlePrev = () => manualGo((current - 1 + total) % total, "prev");
+  const handleNext = () => manualGo((current + 1) % total, "next");
+  const handleDot = (idx: number) =>
+    manualGo(idx, idx > current ? "next" : "prev");
+
+  // Animation: incoming slide slides in, outgoing slides out
+  const getSlideStyle = (idx: number): string => {
+    if (idx === current) {
+      if (!animating) return "translate-x-0 opacity-100 z-10";
+      return direction === "next"
+        ? "translate-x-0 opacity-100 z-10 animate-[heroComeFromRight_0.6s_ease_forwards]"
+        : "translate-x-0 opacity-100 z-10 animate-[heroComeFromLeft_0.6s_ease_forwards]";
+    }
+    if (idx === prev) {
+      return direction === "next"
+        ? "-translate-x-full opacity-0 z-0 animate-[heroGoLeft_0.6s_ease_forwards]"
+        : "translate-x-full opacity-0 z-0 animate-[heroGoRight_0.6s_ease_forwards]";
+    }
+    return "translate-x-full opacity-0 z-0 pointer-events-none";
+  };
+
   return (
     <section
-      className="relative w-full overflow-hidden bg-white select-none"
-      style={{
-        backgroundImage:
-          "radial-gradient(ellipse 65% 80% at 15% 15%, rgba(239, 246, 255, 0.85) 0%, rgba(255, 255, 255, 0) 65%), radial-gradient(ellipse 55% 70% at 88% 20%, rgba(236, 253, 245, 0.45) 0%, rgba(255, 255, 255, 0) 60%)",
-      }}
+      className="relative w-full overflow-hidden select-none bg-slate-900"
       aria-label="Hero Banner"
     >
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-[32px] pt-[28px] sm:pt-[36px] lg:pt-[40px] pb-0 lg:h-[573px] relative">
-        <div className="relative h-full flex flex-col lg:block">
-          {/* Left Hero Content (Figma 1:374) */}
-          <div className="relative z-10 w-full lg:w-[664px] lg:pt-[62px] flex flex-col items-start gap-[18px] sm:gap-[27px]">
-            {/* Badge Pill (1:375) */}
-            <div className="inline-flex items-center h-[28px] px-[14px] py-[4px] rounded-full bg-[#eff6ff] border border-[#dbeafe] text-[#073c96] text-[13px] font-medium leading-[16px]">
-              <span>{badgeText}</span>
-              <span className="ml-[6px] text-[#073c96]" aria-hidden="true">
-                •
-              </span>
-            </div>
+      <style>{`
+        @keyframes heroComeFromRight {
+          from { transform: translateX(4%); opacity: 0.7; }
+          to   { transform: translateX(0);  opacity: 1; }
+        }
+        @keyframes heroComeFromLeft {
+          from { transform: translateX(-4%); opacity: 0.7; }
+          to   { transform: translateX(0);   opacity: 1; }
+        }
+        @keyframes heroGoLeft {
+          from { transform: translateX(0);    opacity: 1; }
+          to   { transform: translateX(-3%);  opacity: 0; }
+        }
+        @keyframes heroGoRight {
+          from { transform: translateX(0);   opacity: 1; }
+          to   { transform: translateX(3%);  opacity: 0; }
+        }
+        @keyframes heroFillBar {
+          from { width: 0%; }
+          to   { width: 100%; }
+        }
+      `}</style>
 
-            {/* Heading 1 (1:380) */}
-            <div className="pt-[2px] sm:pt-[7px]">
-              <h1 className="max-w-[511px] text-[34px] sm:text-[48px] lg:text-[60px] font-extrabold text-[#0f172a] leading-[1.1] lg:leading-[60px] tracking-[-1.2px] lg:tracking-[-1.5px]">
-                {titleLine1}
-                <br />
-                {titleLine2}
-              </h1>
+      {/* Slide Stack: Maintains exact native aspect ratio of banner images so full graphic is shown without cropping */}
+      <div className="relative w-full max-w-[1920px] mx-auto aspect-[1024/546]">
+        {slides.map((slide, idx) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-opacity duration-100 ${getSlideStyle(idx)}`}
+          >
+            <img
+              src={slide.image}
+              alt={slide.alt}
+              className="w-full h-full object-cover object-top select-none pointer-events-none"
+              draggable={false}
+            />
+          </div>
+        ))}
 
-              {/* Highlighted Year with curved underline under "Since 1952" */}
-              <div className="relative inline-block mt-1 sm:mt-0 py-[4px] sm:py-[7.5px]">
-                <span className="text-[34px] sm:text-[48px] lg:text-[60px] font-extrabold text-[#073c96] leading-[1.1] lg:leading-[60px] tracking-[-1.2px] lg:tracking-[-1.5px]">
-                  {highlightYear}
-                </span>
-                <svg
-                  className="block absolute left-[2%] sm:left-[30%] lg:left-[48%] -bottom-[2px] sm:bottom-[4px] w-[110px] sm:w-[108px] h-[8px] pointer-events-none"
-                  viewBox="0 0 108 8"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M2 5.5C32 1.5 76 1.5 106 5"
-                    stroke="#2B4BEE"
-                    strokeOpacity="0.35"
-                    strokeWidth="3.2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-            </div>
+        {/* Prev / Next arrows */}
+        <button
+          type="button"
+          onClick={handlePrev}
+          className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 z-20 w-7 h-7 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full bg-black/30 hover:bg-black/50 active:scale-95 backdrop-blur-sm flex items-center justify-center text-white border border-white/20 transition-all duration-200 cursor-pointer shadow-md"
+          aria-label="Previous slide"
+        >
+          <svg
+            className="w-3.5 h-3.5 sm:w-5 sm:h-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.3"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <button
+          type="button"
+          onClick={handleNext}
+          className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 z-20 w-7 h-7 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full bg-black/30 hover:bg-black/50 active:scale-95 backdrop-blur-sm flex items-center justify-center text-white border border-white/20 transition-all duration-200 cursor-pointer shadow-md"
+          aria-label="Next slide"
+        >
+          <svg
+            className="w-3.5 h-3.5 sm:w-5 sm:h-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.3"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
 
-            {/* Subtitle (1:387) */}
-            <p className="max-w-[512px] text-[14px] sm:text-[16px] font-normal leading-[22px] sm:leading-[24px] text-[#64748b]">
-              {subtitle}
-            </p>
-
-            {/* Primary CTA Button (1:388) */}
-            <a
-              href={ctaHref}
-              className="inline-flex items-center justify-center gap-[10px] w-auto px-[20px] sm:px-[22px] py-[12px] sm:py-[14px] rounded-[10px] sm:rounded-[8px] bg-[#3bb748] hover:bg-[#32a23e] text-white text-[14px] sm:text-[16px] font-semibold leading-[20px] shadow-[0_10px_20px_-5px_rgba(59,183,72,0.45)] transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
-            >
-              <span>{ctaText}</span>
-              <svg
-                className="w-[18px] h-[18px] sm:w-[20px] sm:h-[20px] shrink-0 stroke-current"
-                fill="none"
-                strokeWidth="2.2"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M14.43 5.93L20.5 12l-6.07 6.07M3.5 12h16.83"
-                />
-              </svg>
-            </a>
+        {/* Bottom controls: dots + progress bar */}
+        <div className="absolute bottom-2 sm:bottom-4 lg:bottom-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1.5 sm:gap-2">
+          {/* Dots */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handleDot(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={`rounded-full transition-all duration-300 border border-white/40 cursor-pointer ${
+                  idx === current
+                    ? "w-5 sm:w-6 h-2 sm:h-2.5 bg-white shadow-sm"
+                    : "w-2 sm:w-2.5 h-2 sm:h-2.5 bg-white/40 hover:bg-white/70"
+                }`}
+              />
+            ))}
           </div>
 
-          {/* Right Student Showcase (Figma 1:394: bottom flush) */}
-          <div className="mt-6 sm:mt-8 lg:mt-0 lg:absolute lg:right-[32px] lg:bottom-0 w-full lg:w-[843px] lg:h-[533px] pointer-events-none flex items-end justify-center lg:justify-end z-0">
-            <img
-              src={heroStudents}
-              alt="Sindhu Education Society Students"
-              className="w-full max-w-[580px] lg:max-w-none h-auto lg:h-full object-contain object-bottom block"
+          {/* Auto-progress bar */}
+          <div className="w-24 sm:w-40 lg:w-48 h-[2px] rounded-full bg-white/25 overflow-hidden">
+            <div
+              key={`bar-${current}`}
+              className="h-full bg-white rounded-full"
+              style={{
+                animation: `heroFillBar ${AUTOPLAY_MS}ms linear forwards`,
+              }}
             />
           </div>
         </div>

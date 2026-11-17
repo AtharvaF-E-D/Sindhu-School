@@ -57,25 +57,25 @@ const NotableAlumniStoriesSection: React.FC = () => {
       aria-labelledby="notable-alumni-stories-heading"
       className="w-full bg-white"
     >
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-0 pt-14 xl:pt-[66px] pb-14 xl:pb-[132px]">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-0 pt-5 sm:pt-14 xl:pt-[66px] pb-10 sm:pb-14 xl:pb-[132px]">
         {/* Section Heading & Green Divider (Figma 37:2821 & 37:2824) */}
         <h2
           id="notable-alumni-stories-heading"
-          className="text-center text-[32px] sm:text-[42px] lg:text-[48px] leading-[1.15] lg:leading-[54px] font-extrabold tracking-[-1.35px] text-[#073c96]"
+          className="text-center text-[18px] xs:text-[20px] sm:text-[42px] lg:text-[48px] leading-[1.2] lg:leading-[54px] font-extrabold tracking-tight sm:tracking-[-1.35px] text-[#073c96]"
         >
           Alumni Connect
         </h2>
-        <div className="mt-[16px] mx-auto w-full max-w-[782px] h-[2px] bg-[#40c843]" />
+        <div className="mt-2 sm:mt-[16px] mx-auto w-[90px] xs:w-[110px] sm:max-w-[782px] sm:w-full h-[2px] bg-[#40c843]" />
 
         {/* Story 1: Shubham Dubey, Batch 2010 */}
-        <div className="xl:pl-[72px] xl:pr-[74px] mt-12 xl:mt-[89px]">
-          <h3 className="text-[24px] sm:text-[28px] lg:text-[32px] leading-[1.3] lg:leading-[41px] font-bold text-[#171717]">
+        <div className="xl:pl-[72px] xl:pr-[74px] mt-6 sm:mt-12 xl:mt-[89px]">
+          <h3 className="text-[13.5px] xs:text-[14px] sm:text-[28px] lg:text-[32px] leading-[1.3] lg:leading-[41px] font-bold text-[#171717] text-left">
             Shubham Dubey, Batch 2010
           </h3>
 
           <div
             data-alumni-story="shubham"
-            className="mt-[16px] xl:w-[1267px] text-[17px] sm:text-[20px] xl:text-[24px] leading-[1.65] xl:leading-[41px] font-medium text-[#171717] text-justify"
+            className="mt-2 sm:mt-[16px] xl:w-[1267px] text-[10px] xs:text-[10.5px] sm:text-[20px] xl:text-[24px] leading-[15px] sm:leading-[1.65] xl:leading-[41px] font-normal sm:font-medium text-[#171717] text-left sm:text-justify space-y-2 sm:space-y-4 xl:space-y-0"
           >
             {SHUBHAM_PARAGRAPHS.map((p, idx) => (
               <p key={idx}>{p}</p>
@@ -84,14 +84,14 @@ const NotableAlumniStoriesSection: React.FC = () => {
 
           <div
             id="alumni-event-gallery"
-            className="mt-8 xl:mt-[45px] grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[308px_307px_308px_308px] gap-5 xl:gap-[21px] scroll-mt-24"
+            className="mt-4 sm:mt-8 xl:mt-[45px] grid grid-cols-2 xl:grid-cols-[308px_307px_308px_308px] gap-2.5 sm:gap-5 xl:gap-[21px] scroll-mt-24"
           >
             {SHUBHAM_GALLERY.map((photo) => (
               <button
                 key={photo.id}
                 type="button"
                 onClick={() => setSelectedPhoto(photo)}
-                className="relative h-[220px] xl:h-[246px] rounded-[24px] overflow-hidden bg-slate-100 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#40c843]"
+                className="relative aspect-[4/3] sm:aspect-auto sm:h-[220px] xl:h-[246px] rounded-[10px] sm:rounded-[24px] overflow-hidden bg-slate-100 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#40c843]"
               >
                 <img
                   src={photo.src}
@@ -104,27 +104,27 @@ const NotableAlumniStoriesSection: React.FC = () => {
         </div>
 
         {/* Story 2: Dr.Vilas Ramteke sir, Batch 1983 */}
-        <div className="xl:pl-[72px] xl:pr-[74px] mt-14 xl:mt-[86px]">
-          <h3 className="text-[24px] sm:text-[28px] lg:text-[32px] leading-[1.3] lg:leading-[41px] font-bold text-[#171717]">
+        <div className="xl:pl-[72px] xl:pr-[74px] mt-6 sm:mt-14 xl:mt-[86px]">
+          <h3 className="text-[13.5px] xs:text-[14px] sm:text-[28px] lg:text-[32px] leading-[1.3] lg:leading-[41px] font-bold text-[#171717] text-left">
             Dr.Vilas Ramteke sir, Batch 1983
           </h3>
 
           <div
             data-alumni-story="vilas"
-            className="mt-[22px] xl:w-[1267px] text-[17px] sm:text-[20px] xl:text-[24px] leading-[1.65] xl:leading-[41px] font-medium text-[#171717] text-justify"
+            className="mt-2 sm:mt-[22px] xl:w-[1267px] text-[10px] xs:text-[10.5px] sm:text-[20px] xl:text-[24px] leading-[15px] sm:leading-[1.65] xl:leading-[41px] font-normal sm:font-medium text-[#171717] text-left sm:text-justify space-y-2 sm:space-y-4 xl:space-y-0"
           >
             {VILAS_PARAGRAPHS.map((p, idx) => (
               <p key={idx}>{p}</p>
             ))}
           </div>
 
-          <div className="mt-8 xl:mt-[63px] grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[308px_307px_308px_308px] gap-5 xl:gap-[21px]">
+          <div className="mt-4 sm:mt-8 xl:mt-[63px] grid grid-cols-2 xl:grid-cols-[308px_307px_308px_308px] gap-2.5 sm:gap-5 xl:gap-[21px]">
             {VILAS_GALLERY.map((photo) => (
               <button
                 key={photo.id}
                 type="button"
                 onClick={() => setSelectedPhoto(photo)}
-                className="relative h-[220px] xl:h-[246px] rounded-[24px] overflow-hidden bg-slate-100 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#40c843]"
+                className="relative aspect-[4/3] sm:aspect-auto sm:h-[220px] xl:h-[246px] rounded-[10px] sm:rounded-[24px] overflow-hidden bg-slate-100 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#40c843]"
               >
                 <img
                   src={photo.src}

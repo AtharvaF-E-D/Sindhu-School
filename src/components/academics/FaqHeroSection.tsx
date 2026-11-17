@@ -29,40 +29,36 @@ const FaqHeroSection: React.FC = () => {
     <section
       id="faq-hero"
       aria-labelledby="faq-hero-heading"
-      className="w-full bg-white lg:pt-[9px]"
+      className="w-full bg-[#1b1819]"
     >
-      <div className="relative w-full lg:min-h-[600px] overflow-hidden bg-[#1b1819]">
+      <div className="relative w-full lg:min-h-[580px] overflow-hidden bg-[#1b1819]">
         <img
           src={faqHeroBg}
           alt="Sindhu Education Society campus aerial view"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[#1b1819]/55"
-        />
 
-        <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-8 lg:pl-[129px] lg:pr-[208px] py-12 sm:py-16 lg:pt-[84px] lg:pb-[87px]">
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 lg:gap-[48px]">
+        <div className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-8 lg:pl-[129px] lg:pr-[208px] pt-7 sm:pt-10 lg:pt-[84px] pb-10 sm:pb-14 lg:pb-[87px]">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 sm:gap-8 lg:gap-[48px]">
             {/* Left Copy & CTA */}
             <div className="w-full lg:w-[530px] shrink-0 lg:pt-[92px]">
               <h1
                 id="faq-hero-heading"
-                className="font-extrabold text-[36px] sm:text-[44px] xl:text-[48px] leading-[1.12] xl:leading-[54px] tracking-[-1.35px] text-white max-w-[480px]"
+                className="font-bold lg:font-extrabold text-[26px] xs:text-[28px] sm:text-[36px] xl:text-[48px] leading-[1.2] xl:leading-[54px] tracking-normal lg:tracking-[-1.35px] text-white max-w-[480px]"
               >
                 Begin Your Journey with Us
               </h1>
 
-              <p className="mt-[20px] text-[15px] sm:text-[16px] leading-[24px] font-normal text-white max-w-[518px]">
+              <p className="mt-3 sm:mt-4 lg:mt-[20px] text-[13px] xs:text-[13.5px] sm:text-[15px] lg:text-[16px] leading-[19px] sm:leading-[24px] font-normal text-white/95 max-w-[518px]">
                 Give your child the opportunity to learn, grow, and succeed.
                 Explore our admission process and take the first step towards a
                 brighter future with Sindhu Education Society.
               </p>
 
-              <div className="mt-[32px]">
+              <div className="mt-4 sm:mt-6 lg:mt-[32px]">
                 <a
                   href="#schools-curriculum"
-                  className="inline-flex items-center justify-center min-w-[150px] h-[40px] px-[28px] rounded-full bg-[#40c843] hover:bg-[#36b339] text-white text-[12px] leading-[16px] font-semibold tracking-[0.3px] shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-colors"
+                  className="inline-flex items-center justify-center min-w-[130px] sm:min-w-[150px] h-[38px] sm:h-[40px] px-5 sm:px-[28px] rounded-full bg-[#22c55e] hover:bg-[#16a34a] text-white text-[12.5px] sm:text-[12px] leading-[16px] font-medium tracking-[0.2px] shadow-sm transition-colors"
                 >
                   See Our School
                 </a>
@@ -70,19 +66,19 @@ const FaqHeroSection: React.FC = () => {
             </div>
 
             {/* Right: Admission Inquiry Form Card */}
-            <div className="w-full max-w-[430px] mx-auto lg:mx-0 lg:w-[430px] lg:min-h-[429px] shrink-0 rounded-[12px] bg-[#073c96] border border-[#073c96] p-[24px] flex flex-col justify-center gap-[16px] shadow-[0_8px_10px_-6px_rgba(0,0,0,0.1),0_20px_25px_-5px_rgba(0,0,0,0.1)]">
+            <div className="w-full max-w-[430px] mx-auto lg:mx-0 lg:w-[430px] lg:min-h-[429px] shrink-0 rounded-[14px] bg-[#073c96] border border-[#0b48b0] p-5 sm:p-[24px] flex flex-col justify-center gap-3.5 sm:gap-[16px] shadow-2xl">
               <div className="w-full">
-                <h2 className="text-[18px] leading-[28px] font-bold tracking-[0.45px] uppercase text-white">
+                <h2 className="text-[17px] xs:text-[18px] sm:text-[18px] leading-[24px] sm:leading-[28px] font-bold tracking-[0.45px] uppercase text-white">
                   ADMISSION OPEN
                 </h2>
-                <p className="text-[12px] leading-[16px] font-normal text-white/80">
+                <p className="text-[11.5px] xs:text-[12px] sm:text-[12px] leading-[16px] font-normal text-white/80 mt-0.5">
                   We will get in touch with you!
                 </p>
               </div>
 
               <form
                 onSubmit={handleSubmit}
-                className="w-full flex flex-col gap-[28px]"
+                className="w-full flex flex-col gap-3 sm:gap-[20px] lg:gap-[24px]"
               >
                 <input
                   type="text"
@@ -95,7 +91,7 @@ const FaqHeroSection: React.FC = () => {
                     setForm((prev) => ({ ...prev, studentName: e.target.value }));
                   }}
                   required
-                  className="w-full h-[35px] rounded-[4px] bg-white px-[12px] py-[9px] text-[12px] leading-[15px] font-normal text-[#111827] placeholder:text-[#9ca3af] outline-none focus:ring-2 focus:ring-[#40c843]"
+                  className="w-full h-[38px] sm:h-[35px] rounded-[6px] bg-white px-[14px] py-[8px] sm:py-[9px] text-[12.5px] sm:text-[12px] leading-[16px] font-normal text-[#111827] placeholder:text-[#9ca3af] outline-none focus:ring-2 focus:ring-[#22c55e]"
                 />
 
                 <input
@@ -109,7 +105,7 @@ const FaqHeroSection: React.FC = () => {
                     setForm((prev) => ({ ...prev, studentEmail: e.target.value }));
                   }}
                   required
-                  className="w-full h-[35px] rounded-[4px] bg-white px-[12px] py-[9px] text-[12px] leading-[15px] font-normal text-[#111827] placeholder:text-[#9ca3af] outline-none focus:ring-2 focus:ring-[#40c843]"
+                  className="w-full h-[38px] sm:h-[35px] rounded-[6px] bg-white px-[14px] py-[8px] sm:py-[9px] text-[12.5px] sm:text-[12px] leading-[16px] font-normal text-[#111827] placeholder:text-[#9ca3af] outline-none focus:ring-2 focus:ring-[#22c55e]"
                 />
 
                 <input
@@ -123,7 +119,7 @@ const FaqHeroSection: React.FC = () => {
                     setForm((prev) => ({ ...prev, mobile: e.target.value }));
                   }}
                   required
-                  className="w-full h-[35px] rounded-[4px] bg-white px-[12px] py-[9px] text-[12px] leading-[15px] font-normal text-[#111827] placeholder:text-[#9ca3af] outline-none focus:ring-2 focus:ring-[#40c843]"
+                  className="w-full h-[38px] sm:h-[35px] rounded-[6px] bg-white px-[14px] py-[8px] sm:py-[9px] text-[12.5px] sm:text-[12px] leading-[16px] font-normal text-[#111827] placeholder:text-[#9ca3af] outline-none focus:ring-2 focus:ring-[#22c55e]"
                 />
 
                 <div className="relative w-full">
@@ -138,7 +134,7 @@ const FaqHeroSection: React.FC = () => {
                         academicYear: e.target.value,
                       }));
                     }}
-                    className="w-full h-[32px] appearance-none rounded-[4px] bg-white px-[12px] pr-[36px] text-[12px] leading-[16px] font-normal text-[#111827] outline-none focus:ring-2 focus:ring-[#40c843] cursor-pointer"
+                    className="w-full h-[38px] sm:h-[32px] appearance-none rounded-[6px] bg-white px-[14px] pr-[36px] text-[12.5px] sm:text-[12px] leading-[16px] font-normal text-[#111827] outline-none focus:ring-2 focus:ring-[#22c55e] cursor-pointer"
                   >
                     <option value="">Academic Year</option>
                     <option value="2026-27">2026–2027</option>
@@ -162,7 +158,7 @@ const FaqHeroSection: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full h-[36px] rounded-[4px] bg-[#1d1447] hover:bg-[#140d33] text-white text-[12px] leading-[16px] font-bold tracking-[0.6px] uppercase flex items-center justify-center transition-colors cursor-pointer"
+                  className="w-full h-[40px] sm:h-[36px] rounded-[6px] bg-[#1d1447] hover:bg-[#140d33] text-white text-[12.5px] sm:text-[12px] leading-[16px] font-bold tracking-[0.6px] uppercase flex items-center justify-center transition-colors cursor-pointer"
                 >
                   Send
                 </button>
